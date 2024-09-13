@@ -1,0 +1,98 @@
+body {
+    margin: 4;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+header {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+    position: relative;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo a {
+    text-decoration: none;
+    font-size: 24px;
+    color: #333;
+}
+
+.nav-links {
+    list-style: none;
+    margin: 2;
+    padding: 2;
+    display: flex;
+}
+
+.nav-links li {
+    margin: 0 15px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+}
+
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+    background: url('/static/hero-background.jpg') no-repeat center center/cover;
+    color: #5fbebd;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin: 0;
+}
+
+.hero p {
+    font-size: 24px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff5733;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.featured-places {
+    padding: 20px;
+}
+
+.featured-places h2 {
+    text-align: center;
+}
+
+.place-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.place {
+    text-align: center;
+    margin: 10px;
+    flex: 1 1 300px;
+}
+
+.place img {
+    max-width: 100%;
+    height: auto;
+}
+
+footer {
+    background-color: #c26f5d;
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid #b36e6e;
+}

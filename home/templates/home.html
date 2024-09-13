@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderLense</title>
+    <style>
+        h1 {
+            font-size: 56px;
+        }
+    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+        .navbar .logo a {
+            float: left;
+            color: rgb(184, 102, 102);
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 24px;
+        }
+        .nav-links {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            float: right;
+        }
+        .nav-links li {
+            float: left;
+        }
+        .nav-links li a {
+            display: block;
+            color: rgb(177, 121, 121);
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .nav-links li a:hover {
+            background-color: #fefefe;
+            color: black;
+        }
+        .dropdown {
+            float: left;
+            overflow: hidden;
+        }
+        .dropdown .dropbtn {
+            font-size: 16px;
+            border: none;
+            outline: none;
+            color: rgb(200, 128, 128);
+            padding: 14px 16px;
+            background-color: inherit;
+            margin: 0;
+            display: block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #cf8787;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        .dropdown-content a:hover {
+            background-color: #ba8484;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown:hover .dropbtn {
+            background-color: #c79b9b;
+            color: black;
+        }
+        .img-container {
+            display: inline-block;
+            margin: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="#">WanderLense</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">States</a></li>
+                <li><a href="#">City</a></li>
+                <li><a href="#">Food</a></li>
+                <li><a href="#">Hotels</a></li>
+            </ul>
+        </nav>
+        <div class="hero">
+            <h1>Welcome to WanderLense</h1>
+            <p>Explore the places</p>
+            <a href="#" class="cta-button">Browse Now</a>
+        </div>
+    </header>
+    <main>
+        <section class="featured-places">
+            <h2>Featured Places</h2>
+            <div class="place-grid">
+                <div class="place">
+                    <img src="{% static 'kerala.jpeg' %}" alt="Place 1" width="300">
+                    <h3>Kerala</h3>
+                </div>
+                <div class="place">
+                    <img src="{% static 'delhi.jpeg' %}" alt="Place 2" width="300" height="200">
+                    <h3>Delhi</h3>
+                </div>
+                <div class="place">
+                    <img src="{% static 'mumbai.jpeg' %}" alt="Place 3" width="300" height="200">
+                    <h3>Mumbai</h3>
+                </div>
+                <div class="place">
+                    <img src="{% static 'banglore.jpeg' %}" alt="Place 4" width="300" height="200">
+                    <h3>Banglore</h3>
+                </div>
+                <div class="place">
+                    <img src="{% static 'hyd.jpeg' %}" alt="Place 5" width="300" height="200">
+                    <h3>Hyderabad</h3>
+                </div>
+                <div class="place">
+                    <img src="{% static 'chennai.jpeg' %}" alt="Place 6" width="300" height="200">
+                    <h3>Chennai</h3>
+                </div>
+                <div class="place">
+                    <img src="{% static 'varanasi.jpeg' %}" alt="Place 7" width="300" height="100">
+                    <h3>Varanasi</h3>
+                </div>
+                <div class="place">
+                    <img src="{% static 'kashmir.jpeg' %}" alt="Place 8" width="300" height="200">
+                    <h3>Kashmir</h3>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 WanderLense. All rights reserved.</p>
+    </footer>
+</body>
+</html>
