@@ -1,0 +1,138 @@
+<!-- myapp/templates/andhra_pradesh_detail.html -->
+{% load static %}  <!-- Load the static files tag library -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karnataka Destinations</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}"> <!-- Correctly link to your CSS -->
+    <style>
+        body {
+            background-color: #000; /* Set the background color to black */
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+               /* Navbar Styling */
+               .navbar {
+            background-color: #333; /* Navbar background color */
+            padding: 14px 16px; /* Padding for navbar */
+            overflow: hidden;
+        }
+
+        .navbar .logo a {
+            float: left;
+            color: rgb(184, 102, 102);
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        .nav-links {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            float: right;
+        }
+
+        .nav-links li {
+            float: left;
+        }
+
+        .nav-links li a {
+            display: block;
+            color: rgb(177, 121, 121);
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .nav-links li a:hover {
+            background-color: #fefefe;
+            color: black;
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px; /* Optional padding */
+            overflow-y: auto; /* Allow scrolling if content overflows */
+            background-color: #222; /* Dark container background color for contrast */
+            box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin: 20px auto; /* Center the container */
+            max-width: 1200px; /* Optional max width for the container */
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff6347;
+        }
+        .place {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .place img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .booking-options {
+            margin-top: 10px;
+        }
+        .button {
+            background-color: #ff6347;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #e5533d;
+        }
+        .navigation {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="{% url 'home' %}">WanderLens</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'destinations' %}">Destinations</a></li>
+            <li><a href="{% url 'things_to_do' %}">Things To Do</a></li>
+            <li><a href="{% url 'plan_your_trip' %}">Plan Your Trip</a></li>
+            <li><a href="{% url 'indian_calendar' %}">Indian Calendar</a></li>
+        </ul>
+    </div>
+
+    <h1>Explore Karnataka</h1>
+
+    {% for place in places %}
+        <div class="place">
+            <h2>{{ place.name }}</h2>
+            <img src="{{ place.image }}" alt="{{ place.name }}">
+            <p>{{ place.description }}</p>
+            <div class="booking-options">
+                <p>Airfare: {{ place.airfare }}</p>
+                <p>Ship Fare: {{ place.shipfare }}</p>
+                <p>Train Fare: {{ place.trainfare }}</p>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="navigation">
+        <a href="{% url 'home' %}" class="button">Home</a>
+    </div>

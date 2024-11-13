@@ -117,7 +117,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [os.path.join(BASE_DIR / 'static')]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# settings.py
+LOGIN_URL = 'login'  # URL for login view
+LOGIN_REDIRECT_URL = 'home'  # Redirect URL after login
+LOGOUT_REDIRECT_URL = 'home'  # Redirect URL after logout
+# settings.py
+LOGOUT_REDIRECT_URL = '/'
+# Redirect URLs after login/logout
+LOGIN_REDIRECT_URL = '/'       # Redirects to the home page after login
+LOGOUT_REDIRECT_URL = '/'      # Redirects to the home page after logout
+
+# settings.py
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

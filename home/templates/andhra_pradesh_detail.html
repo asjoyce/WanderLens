@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Places in Lakshadweep</title>
+    <style>
+        /* Navbar Styling */
+        .navbar {
+            background-color: #333; /* Navbar background color */
+            padding: 8px 12px; /* Padding for navbar */
+            overflow: hidden;
+            width: 100%; /* Full width */
+            position: fixed; /* Sticks to the top */
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Ensures it stays on top */
+        }
+
+        .navbar .logo a {
+            float: left;
+            color: rgb(184, 102, 102);
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        .nav-links {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            float: right;
+        }
+
+        .nav-links li {
+            float: left;
+        }
+
+        .nav-links li a {
+            display: block;
+            color: rgb(177, 121, 121);
+            text-align: center;
+            padding: 8px 12px;
+            text-decoration: none;
+        }
+
+        .nav-links li a:hover {
+            background-color: #fefefe;
+            color: black;
+        }
+
+        /* Slideshow container styling */
+        .slideshow-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 20px;
+            padding: 20px;
+            margin: 20px auto 0; /* Added margin-top for spacing */
+            max-width: 90%;
+        }
+
+        .slide {
+            position: relative;
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            width: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .slide:hover {
+            transform: scale(1);
+        }
+
+        /* Image styling */
+        .slide img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px 8px 0 0;
+            transition: transform 0.3s ease;
+        }
+
+        /* Image hover animation */
+        .slide:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Slide info styling */
+        .slide-info {
+            padding: 10px;
+            text-align: center;
+            background-color: #fff;
+            font-size: 14px;
+        }
+
+        .slide-info h3 {
+            margin: 10px 0 5px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .slide-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="{% url 'home' %}">WanderLens</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'destinations' %}">Destinations</a></li>
+            <li><a href="{% url 'things_to_do' %}">Things To Do</a></ li>
+            <li><a href="{% url 'plan_your_trip' %}">Plan Your Trip</a></li>
+            <li><a href="{% url 'indian_calendar' %}">Indian Calendar</a></li>
+        </ul>
+    </div>
+
+<div class="slideshow-container">
+    {% for place in places %}
+    <div class="slide">
+        <img src="{{ place.image }}" alt="{{ place.name }}">
+        <div class="slide-info">
+            <h3>{{ place.name }}</h3>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    const slideshowContainer = document.querySelector('.slideshow-container');
+
+    let scrollAmount = 0;
+    const slideWidth = 320; // Approximate width of each slide (including gap)
+
+    function autoScroll() {
+        scrollAmount += slideWidth;
+        if (scrollAmount >= slideshowContainer.scrollWidth) {
+            scrollAmount = 0;
+        }
+        slideshowContainer.scrollTo({
+            left: scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+
+    // Scroll every 3 seconds
+    setInterval(autoScroll, 3000);
+</script>
+
+</body>
+</html>

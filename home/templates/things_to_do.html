@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderLens</title>
+    <style>
+        /* Navigation bar styling */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar .logo a {
+            float: left;
+            color: rgb(184, 102, 102);
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        .nav-links {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            float: right;
+        }
+
+        .nav-links li {
+            float: left;
+        }
+
+        .nav-links li a {
+            display: block;
+            color: rgb(177, 121, 121);
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .nav-links li a:hover {
+            background-color: #fefefe;
+            color: black;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            overflow: auto; /* Allow vertical scrolling */
+        }
+
+        /* General section styling */
+        .section {
+            text-align: left;
+            padding: 50px 0;
+        }
+
+        .section h2 {
+            font-size: 48px;
+            background-image: linear-gradient(90deg, #ff6a00, #ee0979, #ff6a00);
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        /* Horizontal slider container */
+        .horizontal-slider {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+            white-space: nowrap; /* Prevent line breaks */
+            scroll-behavior: smooth;
+        }
+
+        /* Each image inside the slider */
+        .horizontal-slider img {
+            height: 300px;
+            width: auto;
+            display: inline-block;
+            margin-right: 10px;
+            border-radius: 8px;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        /* Hover effect */
+        .horizontal-slider img:hover {
+            transform: scale(1.05);
+        }
+
+        .horizontal-slider-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: left;
+            align-items: left;
+        }
+        
+        .horizontal-slider-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .horizontal-slider-track img {
+            width: 100vw; /* Full viewport width */
+            height: 50vh; /* Full viewport height */
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 50px;
+            background-color: #4caf50;
+            color: white;
+        }
+        h1 {
+            font-size: 2.5em;
+        }
+        /* Section Styles */
+        .section {
+            padding: 40px 20px;
+            text-align: center;
+            background: white;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        p {
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .horizontal-slider {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+        .horizontal-slider img {
+            height: 100%;
+            display: inline-block;
+            cursor: pointer;
+            animation: fadeIn 0.5s forwards;
+        }
+        /* Animation for the images */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+       
+        /* Pop-out animation for popup */
+        @keyframes popOut {
+            from {
+                transform: scale(0.5) translate(-50%, -50%);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translate(-50%, -50%);
+                opacity: 1;
+            }
+        }
+        /* Section styling */
+        .section {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background-image: linear-gradient(90deg, #ff6a00, #ee0979, #ff6a00);
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .section p {
+            font-size: 20px;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        /* Horizontal slider container */
+        .horizontal-slider {
+            display: flex;
+            overflow-x: auto;
+            position: relative;
+            white-space: nowrap;
+            scroll-behavior: smooth;
+        }
+
+        /* Each image inside the slider */
+        .horizontal-slider img {
+            height: 300px;
+            width: auto;
+            display: inline-block;
+            margin-right: 10px;
+            border-radius: 8px;
+            transition: transform 0.5s ease-in-out;
+            cursor: pointer;
+        }
+
+        /* Hover effect */
+        .horizontal-slider img:hover {
+            transform: scale(1.05);
+        }
+
+        .horizontal-slider {
+            display: flex;
+            overflow-x: auto;
+        }
+    
+        .image-container {
+            position: relative;
+            margin-right: 15px;
+        }
+    
+        .image-container img {
+            width: auto;
+            height: 300px;
+            border-radius: 8px;
+        }
+    
+        .image-text {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="{% url 'home' %}">WanderLens</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'destinations' %}">Destinations</a></li>
+                <li><a href="{% url 'things_to_do' %}">Things To Do</a></li>
+                <li><a href="{% url 'indian_calendar' %}">Indian Calendar</a></li>
+                <li><a href="{% url 'login' %}">Login/Sign Up</a></li>
+            </ul>
+            
+        </nav>
+    </header>
+
+<!-- Street Shopping Section with Horizontal Slideshow -->
+<section class="section" id="street-shopping">
+    <h2>Street Shopping</h2>
+    <p>Discover the vibrant street markets across India.</p>
+
+    <div class="horizontal-slider" id="shopping-slider">
+        <div class="image-container">
+        <img src="https://i.pinimg.com/736x/38/c0/88/38c0881ce0fb66b42129c2d7c23d9864.jpg" alt="Delhi Markets" onclick="openPopup('shopping', this.src)">
+        <div class="image-text">Delhi Markets</div>
+    </div>
+        <div class="image-container">
+        <img src="https://i.pinimg.com/736x/7e/2c/3d/7e2c3d0d485d29013a7a2381f6360899.jpg" alt="Jaipur Bazaar" onclick="openPopup('shopping', this.src)">
+        <div class="image-text">Jaipur Bazaar</div>
+    </div>
+        <div class="image-container">
+        <img src="https://things2.do/blogs/wp-content/uploads/2022/12/chor-bazar-shop.jpg" alt="Mumbai Shopping" onclick="openPopup('shopping', this.src)">
+        <div class="image-text">Mumbai Shopping</div>
+    </div>
+        <div class="image-container">
+        <img src="https://thumbs.dreamstime.com/b/entrance-to-historic-new-market-shopping-complex-along-lindsay-street-kolkata-india-formerly-known-as-sir-stuart-hogg-311333431.jpg" alt="Kolkata New Market" onclick="openPopup('shopping', this.src)">
+        <div class="image-text">Kolkata New Market</div>
+    </div>
+        <div class="image-container">
+        <img src="https://media.istockphoto.com/id/1705628740/photo/exclusive-shots-of-brigade-road-in-bengaluru.jpg?s=612x612&w=0&k=20&c=M4VOn7kvU7rusUKPj9AOwfS0Gc71XujCEboufpXQJmY=" alt="Bangalore Commercial Street" onclick="openPopup('shopping', this.src)">
+        <div class="image-text">Bangalore Commercial Street</div>
+    </div>
+    </div>
+</section>
+
+<!-- Monuments and Historical Sites Section with Horizontal Slideshow -->
+<section class="section" id="monuments">
+    <h2>Monuments and Historical Sites</h2>
+    <p>Explore India's rich heritage through its magnificent monuments.</p>
+    <div class="horizontal-slider" id="monuments-slider">
+        <div class="image-container">
+        <img src="https://i.pinimg.com/736x/4e/e2/1c/4ee21c1296822c29ca9a6de19384c36b.jpg" alt="Taj Mahal" onclick="openPopup('monuments', this.src)">
+        <div class="image-text">Taj Mahal</div>
+    </div>
+        <div class="image-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Amer_Fort_Entrance.jpg/380px-Amer_Fort_Entrance.jpg" alt="Amer Fort" onclick="openPopup('monuments', this.src)">
+        <div class="image-text">Amer Fort</div>
+    </div>
+        <div class="image-container">
+        <img src="https://i.pinimg.com/originals/69/7b/da/697bda854de1fc578de83ba19c75b15e.jpg" alt="Red Fort" onclick="openPopup('monuments', this.src)">
+        <div class="image-text">Red Fort</div>
+    </div>
+        <div class="image-container">
+        <img src="https://backpackersunited.in/_next/image?url=https%3A%2F%2Fbpu-images-v1.s3.eu-north-1.amazonaws.com%2Fuploads%2F1721738331331_Golconda%20Fort%206.jpg&w=3840&q=75" alt="Golconda Fort" onclick="openPopup('monuments', this.src)">
+        <div class="image-text">Golconda Fort</div>
+    </div>
+        <div class="image-container">
+        <img src="https://media.istockphoto.com/id/172124032/photo/mysore-palace-at-dusk.jpg?s=612x612&w=0&k=20&c=paO74C_dVsY14IbK0RNqs0TD-lSteQy-AW5CnQFEb_4=" alt="Mysore Palace" onclick="openPopup('monuments', this.src)">
+        <div class="image-text">Mysore Palace</div>
+    </div>
+    </div>
+</section>
+
+<!-- Religious Places Section with Horizontal Slideshow -->
+<section class="section" id="religious-places">
+    <h2>Religious Places</h2>
+    <p>Visit the sacred sites that hold deep spiritual significance.</p>
+    <div class="horizontal-slider" id="religious-slider">
+        <div class="image-container">
+        <img src="https://media.istockphoto.com/id/535570117/photo/golden-temple-in-amritsar-punjab-india.jpg?s=612x612&w=0&k=20&c=TAgZK64Qz6YsljOK1rXZrrW1u1YSlb9e_YBEmm2pfBw=" alt="Golden Temple" onclick="openPopup('religious', this.src)">
+        <div class="image-text">Golden Temple</div>
+    </div>
+        <div class="image-container">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj8Y1YGI2luOAfVecPL0aNz9u43YFQN3mDd_BgHTIt_XrN2M28kyZy4R_DVOG2FMfHuEeeWC6szx4d5ycSUkBdJH4YVJnOY6oSIhllOmUate-Srf_9gm6G5TtKNvZ319alpQxia2F-qkSLwMx9x7SXyZUIjE1ypSe0E-vSEe672JRqB24X6vgbJ3VZWIzY/w1200-h630-p-k-no-nu/jagantah_temple_hyderabad.jpeg" alt="Jagannath Temple" onclick="openPopup('religious', this.src)">
+        <div class="image-text">Jagannath Temple</div>
+    </div>
+        <div class="image-container">
+        <img src="https://i.pinimg.com/originals/b6/9f/06/b69f068a6e8d4a14a850cc0a2ae78997.jpg" alt="Tirumala Temple" onclick="openPopup('religious', this.src)">
+        <div class="image-text">Tirumala Temple</div>
+    </div>
+        <div class="image-container">
+        <img src="https://media.istockphoto.com/id/827065008/photo/holy-town-varanasi-and-the-river-ganges.jpg?s=612x612&w=0&k=20&c=WHGBF2zwPkVMpAma832RbHrov6VwKIMXuDR3N2WmfGg=" alt="Varanasi Ghats" onclick="openPopup('religious', this.src)">
+        <div class="image-text">Varanasi Ghats</div>
+    </div>
+        <div class="image-container">
+        <img src="https://media.tripinvites.com/places/rishikesh/swarg-ashram/entrance-of-swarg-ashram-featured.jpg" alt="Rishikesh Ashrams" onclick="openPopup('religious', this.src)">
+        <div class="image-text">Rishikesh Ashrams</div>
+    </div>
+    </div>
+</section>
+
+<!-- Nature and Wildlife Section with Horizontal Slideshow -->
+<section class="section" id="nature-wildlife">
+    <h2>Nature and Wildlife</h2>
+    <p>Experience the breathtaking beauty of India's natural landscapes.</p>
+    <div class="horizontal-slider" id="nature-slider">
+        <div class="image-container">
+        <img src="https://i.ytimg.com/vi/Dj44fiWTttk/maxresdefault.jpg" alt="Ranthambore" onclick="openPopup('nature', this.src)">
+        <div class="image-text">Ranthambore</div>
+    </div>
+        <div class="image-container">
+        <img src="https://i.pinimg.com/originals/b3/6f/a7/b36fa747a8cdaa0a91f7ae3f68b3e75f.jpg" alt="Alleppey" onclick="openPopup('nature', this.src)">
+        <div class="image-text">Alleppey</div>
+    </div>
+        <div class="image-container">
+        <img src="https://i.pinimg.com/736x/d7/e5/f1/d7e5f136187d533a98c41ddd772e83a1.jpg" alt="Jim Corbett" onclick="openPopup('nature', this.src)">
+        <div class="image-text">Jim Corbett</div>
+    </div>
+        <div class="image-container">
+        <img src="https://www.travelescape.in/wp-content/uploads/2021/05/Kaziranga-Landscape.jpg" alt="Kaziranga" onclick="openPopup('nature', this.src)">
+        <div class="image-text">Kaziranga</div>
+    </div>
+        <div class="image-container">
+        <img src="https://static.toiimg.com/img/67128960/Master.jpg" alt="Pangong Lake" onclick="openPopup('nature', this.src)">
+        <div class="image-text">Pangong Lake</div>
+    </div>
+    </div>
+</section>
+
+<!-- Cultural Experiences Section with Horizontal Slideshow -->
+<section class="section" id="cultural-experiences">
+    <h2>Cultural Experiences</h2>
+    <p>Dive into India's rich cultural experiences and traditions.</p>
+    <div class="horizontal-slider" id="cultural-slider">
+        <div class="image-container">
+        <img src="https://mapacademy.io/wp-content/uploads/2022/04/kathakali-1m.jpg" alt="Kathakali Performances" onclick="openPopup('cultural', this.src)">
+        <div class="image-text">Kathakali Performances</div>
+    </div>
+        <div class="image-container">
+        <img src="https://static.toiimg.com/thumb/width-600,height-400,msid-80388252.cms" alt="Camel Rides" onclick="openPopup('cultural', this.src)">
+        <div class="image-text">Camel Rides</div>
+    </div>
+        <div class="image-container">
+        <img src="https://media.istockphoto.com/id/508628776/photo/sunset-over-kandariya-mahadeva-temple.jpg?s=612x612&w=0&k=20&c=YOpVZmLiY4ccl_aoWRJhfqLpNEDgjyOGuTAKbobCO-U=" alt="Khajuraho Temples" onclick="openPopup('cultural', this.src)">
+        <div class="image-text">Khajuraho Temples</div>
+    </div>
+        <div class="image-container">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgXdD73PmDtSt2OXrnpJN-BLht6oV0NReGjEwZl0oiBlWOUsTNJjjR3jPew2igxAPdZiG1gUEQdCjs4TttnQVV_T9Dr_RRQPPz4nUiMZzNoeC2b4Rtc7cgOEVOqObN_fawfps9JPS1Tumb2/w1200-h630-p-k-no-nu/rann+utsav.jpg" alt="Rann Utsav" onclick="openPopup('cultural', this.src)">
+        <div class="image-text">Rann Utsav</div>
+    </div>
+        <div class="image-container">
+        <img src="https://img.freepik.com/premium-photo/goa-carnival-celebrations-margao-india_1111209-4057.jpg" alt="Goa Carnival" onclick="openPopup('cultural', this.src)">
+        <div class="image-text">Goa Carnival</div>
+    </div>
+    </div>
+</section>
+
+<script>
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function showNextSlide() {
+        slides[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % totalSlides; // Loop back to the first slide
+        slides[currentIndex].classList.add('active');
+    }
+
+    setInterval(showNextSlide, 3000); // Change slide every 3 seconds
+</script>
+
+<script>
+       // Auto-scroll each slider section
+       document.querySelectorAll('.horizontal-slider').forEach(slider => {
+        let scrollInterval;
+
+        function startAutoScroll() {
+            scrollInterval = setInterval(() => {
+                slider.scrollLeft += 1; // Adjust the number for speed
+                if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth) {
+                    slider.scrollLeft = 0; // Reset to start if reached the end
+                }
+            }, 10); // Adjust the interval for speed
+        }
+
+        startAutoScroll();
+
+        // Optional: Pause on hover
+        slider.addEventListener('mouseenter', () => clearInterval(scrollInterval));
+        slider.addEventListener('mouseleave', startAutoScroll);
+    });
+</script>
+
+<script>
+    const sliders = document.querySelectorAll('.horizontal-slider');
+
+    sliders.forEach(slider => {
+        slider.addEventListener('wheel', (event) => {
+            event.preventDefault();
+            slider.scrollLeft += event.deltaY; // Scroll horizontally based on vertical wheel scroll
+        });
+    });
+</script>
+
+<script>
+    const slider = document.querySelector('.horizontal-slider');
+    const imageContainerWidth = document.querySelector('.image-container').offsetWidth + 10; // Include margin
+
+    function slideLeft() {
+        slider.scrollBy({
+            left: -imageContainerWidth,
+            behavior: 'smooth'
+        });
+    }
+
+    function slideRight() {
+        slider.scrollBy({
+            left: imageContainerWidth,
+            behavior: 'smooth'
+        });
+    }
+</script>
+
+<script>
+    function openPopup(category, src) {
+        // Implement your popup functionality here
+        alert(`Image from ${category}: ${src}`);
+    }
+</script>
+
+<footer>
+    <p>&copy; 2024 WanderLense. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo&family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: #eef2f3; /* Light background */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            color: #333;
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300vw; /* Total width for three images */
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            animation: scroll 500s linear infinite; /* Infinite scroll animation */
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); } /* Scroll to the left */
+        }
+
+        .bg-image {
+            width: 100vw; /* Full width for each image */
+            height: 100vh; /* Full height */
+            background-size: cover; /* Cover the entire area */
+            background-position: center; /* Center the images */
+        }
+
+        /* Add background images from Google */
+        .bg1 { background-image: url('https://classicalclaps.com/wp-content/uploads/2019/05/khajuraho-festival.jpg'); }
+        .bg2 { background-image: url('https://i.pinimg.com/736x/f7/7d/06/f77d065f68da79c9bff78076c8ec59ac.jpg'); }
+        .bg3 { background-image: url('https://i.pinimg.com/736x/a1/c3/26/a1c3263b400d3357a33344480daf2de1.jpg'); }
+
+        #title {
+            margin-bottom: 1rem;
+            position: relative; /* Position relative for z-index */
+            z-index: 1; /* Bring title to front */
+        }
+
+        #title > h1 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 3rem;
+            color: #2c3e50;
+        }
+
+        #title > p {
+            font-size: 1.2rem;
+            color: #2980b9;
+        }
+
+        .weekdays {
+            display: flex;
+            justify-content: center;
+            gap: 2.5cm; /* Increased gap to 1cm */
+            color: #fff; /* White text for better contrast */
+            font-size: 1.8rem; /* Increased font size */
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            z-index: 1; /* Bring weekdays to front */
+            position: relative; /* Position relative for z-index */
+        }
+
+        .weekday {
+            background-color: #2980b9; /* Blue background */
+            padding: 0.5rem 1rem; /* Padding for the weekdays */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Shadow effect */
+            text-align: center;
+            flex-grow: 1; /* Equal width for all weekdays */
+        }
+
+        .calendar-frame {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr); /* Seven columns for each day */
+            gap: 0.5vw;
+            width: 84vw;
+            z-index: 1; /* Bring calendar to front */
+            position: relative; /* Position relative for z-index */
+        }
+
+        .day-frame {
+            width: 11vw;
+            height: 11vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-color: #333;
+            color: #fff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .day-frame:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .day-frame .day-number {
+            font-size: 2.5vw;
+            font-weight: 700;
+        }
+
+        .day-frame .day-label {
+            position: absolute;
+            bottom: 5px;
+            font-size: 1rem;
+            text-align: center;
+            padding: 0.3rem;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #f7f7f7;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .day-frame:hover .day-label {
+            opacity: 1;
+        }
+
+        .holiday {
+            background-color: #e74c3c; /* Red for holidays */
+            color: #fff;
+        }
+
+        .festival {
+            background-color: #f1c40f; /* Yellow for festivals */
+            color: #2c3e50;
+        }
+
+        .weekend {
+            background-color: #8e44ad; /* Purple for weekends */
+            color: #fff;
+        }
+
+        .legend {
+            margin-top: 2rem;
+            background-color: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            z-index: 1; /* Bring legend to front */
+            position: relative; /* Position relative for z-index */
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .legend-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        /* Button styling */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            z-index: 1; /* Bring buttons to front */
+            position: relative; /* Position relative for z-index */
+        }
+
+        .button {
+            background-color: #2980b9; /* Blue background */
+            color: white; /* White text */
+            border: none;
+            border-radius: 8px; /* Rounded corners */
+            padding: 10px 20px; /* Padding for buttons */
+            font-size: 1.2rem; /* Font size */
+            margin: 0 10px; /* Margin between buttons */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Transition effects */
+        }
+
+        .button:hover {
+            background-color: #1e6690; /* Darker blue on hover */
+            transform: scale(1.05); /* Slight scale on hover */
+        }
+    </style>
+    <title>Yearly Festival Calendar</title>
+</head>
+<body>
+   
+    
+    <div id="title">
+        <h1 id="monthTitle"></h1>
+        <p>Holidays & Festivals</p>
+    </div>
+    <div class="weekdays" id="weekdays"></div>
+    <div class="calendar-frame" id="calendar"></div>
+
+    <div class="nav-buttons">
+        <button class="button" id="prevButton">Previous</button>
+        <button class="button" id="nextButton">Next</button>
+    </div>
+
+    <div class="legend">
+        <h2>Legend</h2>
+        <div class="legend-item">
+            <div class="legend-dot" style="background-color: #8e44ad;"></div>
+            <span>Weekends</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot" style="background-color: #e74c3c;"></div>
+            <span>Indian Festivals</span>
+        </div>
+       
+    </div>
+
+    <script>
+        const date = new Date();
+        const year = date.getFullYear();
+
+        const months = [
+            { name: "January", days: 31, holidays: { 1: "New Year's Day", 14: "Makar Sankranti" } },
+            { name: "February", days: 28, holidays: { 14: "Valentine's Day", 19: "Maha Shivaratri" } },
+            { name: "March", days: 31, holidays: { 8: "Holi" } },
+            { name: "April", days: 30, holidays: { 14: "Baisakhi" } },
+            { name: "May", days: 31, holidays: { 1: "Labour Day", 14: "Eid al-Fitr" } },
+            { name: "June", days: 30, holidays: { 21: "International Yoga Day" } },
+            { name: "July", days: 31, holidays: { 4: "World Chocolate Day" } },
+            { name: "August", days: 31, holidays: { 15: "Independence Day", 19: "Raksha Bandhan" } },
+            { name: "September", days: 30, holidays: { 5: "Teacher's Day" } },
+            { name: "October", days: 31, holidays: { 2: "Gandhi Jayanti", 24: "Diwali" } },
+            { name: "November", days: 30, holidays: { 14: "Children's Day" } },
+            { name: "December", days: 31, holidays: { 25: "Christmas" } },
+        ];
+
+        let currentMonth = 0;
+
+        function loadCalendar(monthIndex) {
+            const month = months[monthIndex];
+            document.getElementById("monthTitle").innerText = `${month.name} ${year}`;
+            const weekdaysDiv = document.getElementById("weekdays");
+            weekdaysDiv.innerHTML = ""; // Clear existing weekdays
+
+            // Adding weekday labels
+            const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            weekdays.forEach(day => {
+                const weekday = document.createElement("div");
+                weekday.className = "weekday";
+                weekday.innerText = day;
+                weekdaysDiv.appendChild(weekday);
+            });
+
+            const calendarDiv = document.getElementById("calendar");
+            calendarDiv.innerHTML = ""; // Clear existing calendar
+
+            // Create an empty array for days in the month
+            const daysInMonth = new Array(month.days).fill(null).map((_, index) => index + 1);
+            const firstDay = new Date(year, monthIndex, 1).getDay(); // Get the first day of the month
+
+            // Create empty spaces for days before the first of the month
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDiv = document.createElement("div");
+                emptyDiv.className = "day-frame";
+                calendarDiv.appendChild(emptyDiv);
+            }
+
+            // Populate calendar with days
+            daysInMonth.forEach(day => {
+                const dayDiv = document.createElement("div");
+                dayDiv.className = "day-frame";
+                dayDiv.innerHTML = `<span class="day-number">${day}</span>`;
+                
+                // Check for holidays and festivals
+                const holiday = month.holidays[day];
+                if (holiday) {
+                    dayDiv.classList.add("holiday");
+                    const label = document.createElement("div");
+                    label.className = "day-label";
+                    label.innerText = holiday;
+                    dayDiv.appendChild(label);
+                } else if (firstDay !== 0 && (day % 7 === 0 || (day - 1 + firstDay) % 7 === 6)) {
+                    dayDiv.classList.add("weekend"); // Add weekend class
+                }
+
+                // Create labels for festivals and special events
+                if (month.name === "August" && day === 15) {
+                    const festivalLabel = document.createElement("div");
+                    festivalLabel.className = "day-label";
+                    festivalLabel.innerText = "Independence Day";
+                    dayDiv.classList.add("festival");
+                    dayDiv.appendChild(festivalLabel);
+                }
+
+                calendarDiv.appendChild(dayDiv);
+            });
+        }
+
+        document.getElementById("prevButton").addEventListener("click", () => {
+            if (currentMonth > 0) {
+                currentMonth--;
+                loadCalendar(currentMonth);
+            }
+        });
+
+        document.getElementById("nextButton").addEventListener("click", () => {
+            if (currentMonth < months.length - 1) {
+                currentMonth++;
+                loadCalendar(currentMonth);
+            }
+        });
+
+        // Initial load
+        loadCalendar(currentMonth);
+    </script>
+</body>
+</html>

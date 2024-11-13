@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakshadweep Trip Itinerary</title>
+    <style>
+        /* Basic Styling */
+        .header, .section {
+            text-align: left;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .header, .section {
+            text-align: left;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s;
+        }
+
+        /* Header Text Styling */
+        .header h1 {
+            font-size: 2.5em;
+            color: #004157;
+            animation: slideIn 0.5s forwards;
+            transform: translateY(-20px);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #004157;
+        }
+
+        /* Section Header Styling */
+        .section h2 {
+            font-size: 2em;
+            color: #004157;
+            margin-bottom: 10px;
+            text-decoration: underline;
+            animation: fadeIn 1s;
+        }
+
+        /* Section Text Styling */
+        .section p, .section ul {
+            font-size: 1.1em;
+            color: #004157;
+            line-height: 1.6;
+            animation: fadeIn 1s;
+        }
+        
+        .image-gallery {
+            display: flex; /* Use flexbox to arrange items in a row */
+            overflow-x: auto; /* Allow horizontal scrolling if needed */
+            padding: 10px 0; /* Add some padding */
+            scroll-behavior: smooth; /* Smooth scrolling for a better experience */
+        }
+        
+        .image-wrapper {
+            flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
+            margin-right: 20px; /* Spacing between items */
+            text-align: center; /* Center-align text under the images */
+            position: relative; /* Positioning context for overlay */
+        }
+        
+        .image-wrapper img {
+            width: 250px; /* Set a fixed width for uniformity */
+            height: 200px; /* Set a fixed height for uniformity */
+            object-fit: cover; /* Maintain aspect ratio while covering the area */
+            border-radius: 8px; /* Rounded corners for images */
+            transition: transform 0.3s; /* Animation effect on hover */
+        }
+        
+        .image-wrapper img:hover {
+            transform: scale(1.05); /* Slight zoom effect on hover */
+        }
+        
+        .hotel-name {
+            display: block; /* Make the hotel name a block element */
+            margin-top: 5px; /* Space between image and hotel name */
+            font-weight: bold; /* Bold text for emphasis */
+        }
+        
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            animation: fadeIn 0.5s;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+        }
+        
+        /* Slideshow controls */
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            padding: 16px;
+            transition: 0.3s;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+
+        .next { right: 0; border-radius: 3px 0 0 3px; }
+        .prev { left: 0; }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .flight-links {
+            display: flex;
+            justify-content: space-around; /* Adjusts spacing between images */
+            flex-wrap: wrap; /* Allows images to wrap to the next line if the screen is narrow */
+            margin: 20px 0; /* Adds margin above and below the section */
+        }
+        
+        .flight-item {
+            position: relative; /* Required for absolute positioning of the overlay */
+            margin: 10px; /* Adds spacing around each flight item */
+            overflow: hidden; /* Ensures the pop-up effect is contained */
+            transition: transform 0.3s ease; /* Animation for the item */
+        }
+
+        .slideshow-container {
+            position: relative;
+            max-width: 600px; /* Adjust the maximum width as needed */
+            margin: auto;
+            overflow: hidden; /* Hides overflow content */
+        }
+        
+        .mySlides {
+            display: none; /* Hides all slides by default */
+            text-align: center; /* Center-aligns the content */
+        }
+
+        .image-wrapper {
+            position: relative; /* Positioning the text overlay */
+        }
+        
+        .image-wrapper img {
+            width: 100%; /* Makes image take the full width of its container */
+            height: 300px; /* Sets a fixed height for consistency */
+            object-fit: cover; /* Maintains the aspect ratio while covering the entire area */
+        }
+        
+        .flight-name {
+            position: absolute; /* Positioning the text overlay */
+            bottom: 10px; /* Distance from the bottom */
+            left: 50%; /* Centering the text */
+            transform: translateX(-50%); /* Adjusts centering */
+            color: white; /* Text color */
+            background-color: rgba(0, 0, 0, 0.6); /* Background color with transparency */
+            padding: 5px 10px; /* Padding for better visibility */
+            border-radius: 5px; /* Rounding the corners */
+            font-weight: bold; /* Making text bold */
+        }
+
+        .prev, .next {
+            cursor: pointer; /* Changes cursor to pointer on hover */
+            position: absolute; /* Positioning the buttons */
+            top: 50%; /* Centering vertically */
+            width: auto; /* Width of buttons */
+            padding: 16px; /* Padding inside buttons */
+            color: white; /* Button text color */
+            font-weight: bold; /* Button text weight */
+            font-size: 18px; /* Button text size */
+            transition: 0.6s ease; /* Transition for hover effects */
+            user-select: none; /* Prevents text selection */
+        }
+        
+        .prev {
+            left: 0; /* Position to the left */
+        }
+        
+        .next {
+            right: 0; /* Position to the right */
+        }
+        
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.6); /* Background color on hover */
+        }
+        
+        .transportation-tips {
+            background-color: #f9f9f9; /* Light background color */
+            padding: 20px; /* Padding for spacing inside the container */
+            border-radius: 8px; /* Rounded corners for the container */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+            margin: 20px 0; /* Margin for spacing between sections */
+        }
+        
+        .transportation-tips h3 {
+            color: #004157; /* Darker color for headings */
+            font-size: 24px; /* Font size for the heading */
+        }
+        
+        .transportation-tips p {
+            color: #004157; /* Slightly lighter color for the paragraph text */
+            font-size: 16px; /* Font size for the paragraph text */
+        }
+        
+        .transportation-tips ul {
+            list-style-type: disc; /* Use bullets for the list */
+            padding-left: 20px; /* Indent the list */
+        }
+        
+        .transportation-tips li {
+            margin-bottom: 10px; /* Space between list items */
+        }
+        
+        
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Lakshadweep Trip Itinerary</h1>
+    <p>A scenic and unforgettable adventure awaits.</p>
+</div>
+
+<div class="section">
+    <h2>Trip Overview</h2>
+    <p>Lakshadweep, a tropical paradise in the Arabian Sea, is known for its pristine beaches, coral reefs, and clear blue waters. Prepare for an unforgettable adventure!</p>
+</div>
+
+<div class="section">
+    <h2>Day-by-Day Itinerary</h2>
+    
+    <h3>Day 1: Arrival and Relaxation on Agatti Island</h3>
+    <h4>Morning</h4>
+    <ul>
+        <li>Arrival: Fly into Agatti Island Airport.</li>
+        <li>Accommodation Check-in: Settle into a cozy stay at Sea Shells Beach Resort or White Pearl Beach Resort.</li>
+    </ul>
+    
+    <h4>Afternoon</h4>
+    <ul>
+        <li>Beach Time at Agatti: Spend time at Agatti Beach, relaxing, swimming, or strolling along the shoreline.</li>
+    </ul>
+    
+    <h4>Evening</h4>
+    <ul>
+        <li>Sunset Views: Watch the sunset over the Arabian Sea.</li>
+        <li>Dinner: Enjoy a meal of fresh seafood and local flavors at your resort.</li>
+    </ul>
+    
+    <h3>Day 2: Day Trip to Bangaram Island</h3>
+    <h4>Morning</h4>
+    <ul>
+        <li>Boat Ride to Bangaram: Take a scenic boat ride to Bangaram Island. Known for its vibrant coral reefs, this is an ideal spot for snorkeling and swimming.</li>
+    </ul>
+    
+    <h4>Afternoon</h4>
+    <ul>
+        <li>Beach Relaxation and Lunch: Picnic or light lunch at Bangaram’s beach café. Soak in the island’s peaceful atmosphere.</li>
+    </ul>
+    
+    <h4>Evening</h4>
+    <ul>
+        <li>Return to Agatti: Boat ride back to Agatti Island.</li>
+        <li>Dinner: Dinner back at the resort with a range of local dishes.</li>
+    </ul>
+
+    <h3>Day 3: Local Exploration and Departure</h3>
+    <h4>Morning</h4>
+    <ul>
+        <li>Village Tour: Visit nearby Agatti Village to explore local crafts and culture.</li>
+        <li>Shopping: Browse small shops for souvenirs and handmade items.</li>
+    </ul>
+    
+    <h4>Afternoon</h4>
+    <ul>
+        <li>Lunch at Resort: Final lunch at your resort with some favorite regional dishes.</li>
+    </ul>
+    
+    <h4>Departure</h4>
+    <ul>
+        <li>Check out and head back to Agatti Airport for your return flight.</li>
+    </ul>
+</div>
+
+
+<div class="section">
+    <h2>Accommodation Options</h2>
+
+    <div class="image-gallery">
+        <div class="image-wrapper">
+            <a href="https://www.booking.com/hotel/xyz-island-breeze-inn.html" target="_blank">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/66/2b/78/minicoy-island-beach.jpg?w=500&h=400&s=1" alt="Basic Hotel" />
+                <span class="hotel-name">Island Breeze Inn</span>
+            </a>
+            <p>Close to Agatti Beach - Cozy rooms with essential amenities.</p>
+        </div>
+
+        <div class="image-wrapper">
+            <a href="https://www.booking.com/hotel/abc-coral-sands-resort.html" target="_blank">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/e2/85/92/this-stay-in-this-island.jpg?w=300&h=-1&s=1" alt="Standard Hotel" />
+                <span class="hotel-name">Coral Sands Resort</span>
+            </a>
+            <p>Modern rooms with sea views.</p>
+        </div>
+
+        <div class="image-wrapper">
+            <a href="https://www.booking.com/hotel/def-blue-lagoon-suites.html" target="_blank">
+                <img src="https://q-xx.bstatic.com/xdata/images/hotel/max500/30241183.jpg?k=061ac43c76f96a2dc0f7a978990111a159ac4e234b45a2e676fbd064515ec5b8&o=" alt="Comfort Hotel" />
+                <span class="hotel-name">Blue Lagoon Suites</span>
+            </a>
+            <p>Suites with oceanfront balconies.</p>
+        </div>
+
+        <div class="image-wrapper">
+            <a href="https://www.booking.com/hotel/ghi-paradise-reef-resort.html" target="_blank">
+                <img src="https://im.hunt.in/cg/laksh/Lakshadweep/City-Guide/Laksha-resorts.jpg" alt="Premium Hotel" />
+                <span class="hotel-name">Paradise Reef Resort</span>
+            </a>
+            <p>All-inclusive packages, private pools.</p>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div class="section">
+    <h2>Travel Essentials</h2>
+    <p>When planning your trip to Lakshadweep, it's essential to have all the necessary travel information at your fingertips. Here are some flight booking links and transportation tips to make your journey smoother and more budget-friendly.</p>
+
+    <h3>Flight Options</h3>
+    <p>Below are some popular airlines that operate flights to Lakshadweep:</p>
+    
+        <div class="image-gallery">
+            <div class="image-wrapper">
+                <a href="https://www.airindia.in" target="_blank">
+                    <img src="https://www.airindia.com/adobe/dynamicmedia/deliver/dm-aid--b5a37363-60e9-4ca8-94ab-0ffc4b92e828/spend_points_new_webp.webp" alt="Air India" />
+                    <span class="flight-name">Air India</span>
+                </a>
+            </div>
+    
+            <div class="image-wrapper">
+                <a href="https://www.indigo.in" target="_blank">
+                    <img src="https://cdn.siasat.com/wp-content/uploads/2023/06/indigo.jpg" alt="IndiGo" />
+                    <span class="flight-name">IndiGo</span>
+                </a>
+            </div>
+    
+            <div class="image-wrapper">
+                <a href="https://www.spicejet.com" target="_blank">
+                    <img src="https://thumbs.dreamstime.com/b/spicejet-boeing-winglets-indian-carrier-s-blue-sky-background-94731480.jpg" alt="SpiceJet" />
+                    <span class="flight-name">SpiceJet</span>
+                </a>
+            </div>
+    
+            <div class="image-wrapper">
+                <a href="https://www.vistara.com" target="_blank">
+                    <img src="https://m.economictimes.com/thumb/msid-108949798,width-1200,height-900,resizemode-4,imgsize-31938/vistara.jpg" alt="Vistara" />
+                    <span class="flight-name">Vistara</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="section transportation-tips">
+        <h3>Transportation Tips</h3>
+        <p>Getting around Lakshadweep can be both fun and economical. Here are some tips:</p>
+        <ul>
+            <li><strong>Local Ferries:</strong> Utilize the local ferry services between islands, which are a cost-effective way to explore multiple locations. It's advisable to book tickets in advance during peak tourist seasons.</li>
+            <li><strong>Bicycles and Scooters:</strong> Renting a bicycle or scooter on islands like Agatti or Bangaram is a budget-friendly option for getting around. Many resorts offer rental services, allowing you to explore at your own pace.</li>
+            <li><strong>Group Tours:</strong> Joining group tours can significantly reduce costs compared to private arrangements. Look for package deals that include transportation, meals, and activities.</li>
+            <li><strong>Walk:</strong> The islands are small and pedestrian-friendly. Walking is not only free but also a great way to enjoy the natural beauty and local culture.</li>
+            <li><strong>Plan Ahead:</strong> Research and plan your itinerary in advance. This will help you optimize your travel time and avoid unnecessary expenses.</li>
+        </ul>
+    </div>
+    
+
+
+
+<!-- Modal for Image Pop-up and Slideshow -->
+<div id="modal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content-container">
+        <img id="modal-content" class="modal-content">
+    </div>
+    <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+    <a class="next" onclick="changeSlide(1)">&#10095;</a>
+</div>
+
+<!-- JavaScript for Modal and Slideshow -->
+<script>
+    let modal = document.getElementById("modal");
+    let modalContent = document.getElementById("modal-content");
+    let images = [
+        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/66/2b/78/minicoy-island-beach.jpg?w=500&h=400&s=1",
+        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/e2/85/92/this-stay-in-this-island.jpg?w=300&h=-1&s=1"
+    ];
+    let slideIndex = 0;
+
+    function openModal(index) {
+        slideIndex = index;
+        modal.style.display = "block";
+        showSlide(slideIndex);
+    }
+
+    function closeModal() {
+        modal.style.display = "none";
+    }
+
+    function changeSlide(n) {
+        showSlide(slideIndex += n);
+    }
+
+    function showSlide(n) {
+        if (n >= images.length) { slideIndex = 0 }
+        if (n < 0) { slideIndex = images.length - 1 }
+        modalContent.src = images[slideIndex];
+    }
+</script>
+
+</body>
+</html>

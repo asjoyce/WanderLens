@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderLens</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<style>
+
+    /* Basic navbar styling */
+.navbar {
+    display: flex;
+    background-color: #333;
+    padding: 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar a {
+    color: #e07a7a;
+    text-decoration: none;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+}
+.navbar a:hover {
+    color: #ffdddd;
+}
+
+/* Profile icon and dropdown styling */
+.profile-menu {
+    position: relative;
+    display: inline-block;
+}
+.profile-icon {
+    width: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.profile-icon:hover {
+    transform: rotate(360deg);
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #444;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+.dropdown-content a {
+    color: #e07a7a;
+    padding: 10px;
+    display: block;
+    text-align: left;
+    text-decoration: none;
+}
+.dropdown-content a:hover {
+    background-color: #555;
+}
+.profile-menu:hover .dropdown-content {
+    display: block;
+    animation: fadeIn 0.5s;
+}
+
+/* Dropdown fade-in effect */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+</style>
+<body>
+    <nav class="navbar">
+        <a href="{% url 'home' %}">WanderLens</a>
+        <a href="#">Destinations</a>
+        <a href="#">Things To Do</a>
+        <a href="#">Indian Calendar</a>
+
+        {% if user.is_authenticated %}
+            <div class="profile-menu">
+                <img src="{% static 'images/profile-icon.png' %}" alt="Profile" class="profile-icon">
+                <div class="dropdown-content">
+                    <a href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+        {% else %}
+            <a href="{% url 'login' %}">Login/Sign Up</a>
+        {% endif %}
+    </nav>
+
+    {% block content %}{% endblock %}
+</body>
+</html>

@@ -4,18 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WanderLense</title>
-    <style>
-        h1 {
-            font-size: 56px;
-        }
-    </style>
+
+    <!-- Load static files -->
     {% load static %}
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
     <style>
+        /* Navigation bar styling */
         .navbar {
             background-color: #333;
             overflow: hidden;
         }
+
         .navbar .logo a {
             float: left;
             color: rgb(184, 102, 102);
@@ -24,6 +26,7 @@
             text-decoration: none;
             font-size: 24px;
         }
+
         .nav-links {
             list-style-type: none;
             margin: 0;
@@ -31,9 +34,11 @@
             overflow: hidden;
             float: right;
         }
+
         .nav-links li {
             float: left;
         }
+
         .nav-links li a {
             display: block;
             color: rgb(177, 121, 121);
@@ -41,116 +46,620 @@
             padding: 14px 16px;
             text-decoration: none;
         }
+
         .nav-links li a:hover {
             background-color: #fefefe;
             color: black;
         }
-        .dropdown {
-            float: left;
-            overflow: hidden;
+
+        /* Add styles for dropdown */
+        .profile-icon {
+            cursor: pointer;
         }
-        .dropdown .dropbtn {
-            font-size: 16px;
-            border: none;
-            outline: none;
-            color: rgb(200, 128, 128);
-            padding: 14px 16px;
-            background-color: inherit;
-            margin: 0;
-            display: block;
-        }
+        
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: #cf8787;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            right: 0;
+            background-color: #f9f9f9;
+            min-width: 150px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
+            padding: 10px 0;
         }
+        
         .dropdown-content a {
-            float: none;
             color: black;
             padding: 12px 16px;
             text-decoration: none;
             display: block;
-            text-align: left;
         }
+        
         .dropdown-content a:hover {
-            background-color: #ba8484;
+            background-color: #ddd;
         }
+        
+        /* Show the dropdown content when hovering over the profile icon */
         .dropdown:hover .dropdown-content {
             display: block;
         }
-        .dropdown:hover .dropbtn {
-            background-color: #c79b9b;
-            color: black;
+
+        /* Full-screen background image for each slider */
+        .slider {
+            position: relative;
+            width: 100%;
+            height: 100vh; /* Full viewport height */
+            overflow: hidden;
         }
-        .img-container {
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.5s ease;
+        }
+
+        .slide img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Hero section for center alignment */
+        .hero {
+            position: absolute;
+            top: 25%; /* Adjusted lower from the top of the page */
+            left: 50%;
+            transform: translate(-50%, -25%);
+            text-align: center;
+            color: white;
+            z-index: 2; /* Ensures hero content appears over slider */
+        }
+
+        body {
+            font-family: 'Calibri', sans-serif; /* Set the default font to Calibri */
+        }
+
+        h1 {
+            font-size: 56px;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: popOut 1.5s ease-in-out 0.5s forwards; /* Delayed pop-out */
+            background-image: url('{%static "/Users/sathwikajoyce/WanderLens/home/static/traditional-screen-printed-cotton-kalamkari-fabric-500x500.webp" %}'); /* Pattern image */
+            background: linear-gradient(90deg, #ff6a00, #ee0979, #ff6a00); /* Color gradient */
+            -webkit-background-clip: text; /* Clip the background to text */
+            -webkit-text-fill-color: transparent; /* Make text color transparent */
+            background-clip: text; /* For non-webkit browsers */
+        }
+        
+        p {
+            font-size: 24px;
+            margin-top: 20px;
+            opacity: 0;
+            animation: popOut 1.5s ease-in-out 1s forwards; /* Later pop-out */
+            background-image: url('{%static "/Users/sathwikajoyce/WanderLens/home/static/7248beee1d1eb7601b6c5fbbf367869e.jpg" %}'); /* Pattern image */
+            background: linear-gradient(90deg, #ff6a00, #ee0979, #ff6a00); /* Color gradient */
+            -webkit-background-clip: text; /* Clip the background to text */
+            -webkit-text-fill-color: transparent; /* Make text color transparent */
+            background-clip: text; /* For non-webkit browsers */
+        }
+
+        .cta-button {
             display: inline-block;
-            margin: 30px;
+            padding: 12px 25px;
+            background-color: rgb(184, 102, 102);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-size: 18px;
+            opacity: 0;
+            animation: popOut 1.5s ease-in-out 1.5s forwards; /* Last pop-out */
+            cursor: pointer; /* Change cursor on hover */
+            transition: background 0.3s ease; /* Smooth transition */
         }
+
+        .cta-button:hover {
+            background-color: rgb(177, 121, 121);
+        }
+
+        /* Pop-out animation for individual elements */
+        @keyframes popOut {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Bubble animation styling */
+        @keyframes bubble {
+            0% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -50px;
+            width: 20px; /* Bubble size */
+            height: 20px; /* Bubble size */
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8); /* Bubble color */
+            animation: bubble 6s infinite;
+            opacity: 0.6; /* Slight transparency */
+        }
+
+        /* Create multiple bubbles */
+        .bubble:nth-child(1) {
+            left: 20%;
+            animation-delay: 0s;
+            animation-duration: 5s;
+        }
+
+        .bubble:nth-child(2) {
+            left: 40%;
+            animation-delay: 1s;
+            animation-duration: 6s;
+        }
+
+        .bubble:nth-child(3) {
+            left: 60%;
+            animation-delay: 2s;
+            animation-duration: 4.5s;
+        }
+
+        .bubble:nth-child(4) {
+            left: 80%;
+            animation-delay: 3s;
+            animation-duration: 6s;
+        }
+
+        .bubble:nth-child(5) {
+            left: 30%;
+            animation-delay: 1.5s;
+            animation-duration: 5.5s;
+        }
+
+        /* General section styling */
+        .section {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .section h2 {
+            font-size: 48px;
+            background-image: linear-gradient(90deg, #ff6a00, #ee0979, #ff6a00);
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        /* Horizontal slider container */
+        .horizontal-slider {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+            white-space: nowrap; /* Prevent line breaks */
+            scroll-behavior: smooth;
+        }
+
+        /* Each image inside the slider */
+        .horizontal-slider img {
+            height: 300px;
+            width: auto;
+            display: inline-block;
+            margin-right: 10px;
+            border-radius: 8px;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        /* Hover effect */
+        .horizontal-slider img:hover {
+            transform: scale(1.05);
+        }
+
+        .horizontal-slider {
+            display: flex;
+            overflow-x: auto;
+        }
+    
+        .image-container {
+            position: relative;
+            margin-right: 15px;
+        }
+    
+        .image-container img {
+            width: auto;
+            height: 300px;
+            border-radius: 8px;
+        }
+    
+        .image-text {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 18px;
+        }
+        
+        .horizontal-slider-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .horizontal-slider-track img {
+            width: 100vw; /* Full viewport width */
+            height: 50vh; /* Full viewport height */
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
     </style>
 </head>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+
 <body>
     <header>
         <nav class="navbar">
             <div class="logo">
-                <a href="#">WanderLense</a>
+                <a href="{% url 'home' %}">WanderLens</a>
             </div>
             <ul class="nav-links">
-                <li><a href="#">States</a></li>
-                <li><a href="#">City</a></li>
-                <li><a href="#">Food</a></li>
-                <li><a href="#">Hotels</a></li>
+                <li><a href="{% url 'destinations' %}">Destinations</a></li>
+                <li><a href="{% url 'things_to_do' %}">Things To Do</a></li>
+                <li><a href="{% url 'indian_calendar' %}">Indian Calendar</a></li>
+                {% if user.is_authenticated %}
+                <!-- Profile Icon with Dropdown -->
+                <li class="dropdown">
+                    <a href="#" class="profile-icon">
+                        <img src="https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=" alt="Profile" style="width: 24px; height: 24px;">
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'logout' %}">Logout</a>
+                    </div>
+                </li>
+                {% else %}
+                <!-- Login / Sign Up Link -->
+                <li><a href="{% url 'signup' %}">Login/Sign Up</a></li>
+                {% endif %}
             </ul>
         </nav>
-        <div class="hero">
-            <h1>Welcome to WanderLense</h1>
-            <p>Explore the places</p>
-            <a href="#" class="cta-button">Browse Now</a>
-        </div>
     </header>
-    <main>
-        <section class="featured-places">
-            <h2>Featured Places</h2>
-            <div class="place-grid">
-                <div class="place">
-                    <img src="{% static 'kerala.jpeg' %}" alt="Place 1" width="300">
-                    <h3>Kerala</h3>
-                </div>
-                <div class="place">
-                    <img src="{% static 'delhi.jpeg' %}" alt="Place 2" width="300" height="200">
-                    <h3>Delhi</h3>
-                </div>
-                <div class="place">
-                    <img src="{% static 'mumbai.jpeg' %}" alt="Place 3" width="300" height="200">
-                    <h3>Mumbai</h3>
-                </div>
-                <div class="place">
-                    <img src="{% static 'banglore.jpeg' %}" alt="Place 4" width="300" height="200">
-                    <h3>Banglore</h3>
-                </div>
-                <div class="place">
-                    <img src="{% static 'hyd.jpeg' %}" alt="Place 5" width="300" height="200">
-                    <h3>Hyderabad</h3>
-                </div>
-                <div class="place">
-                    <img src="{% static 'chennai.jpeg' %}" alt="Place 6" width="300" height="200">
-                    <h3>Chennai</h3>
-                </div>
-                <div class="place">
-                    <img src="{% static 'varanasi.jpeg' %}" alt="Place 7" width="300" height="100">
-                    <h3>Varanasi</h3>
-                </div>
-                <div class="place">
-                    <img src="{% static 'kashmir.jpeg' %}" alt="Place 8" width="300" height="200">
-                    <h3>Kashmir</h3>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 WanderLense. All rights reserved.</p>
-    </footer>
+<div class="slider">
+    <div class="slide active" style="background-image: url('https://i.redd.it/s7dvczi4y3f61.jpg');"></div>
+    <div class="slide" style="background-image: url('https://i.pinimg.com/736x/f9/18/49/f91849e067ec21679c47c18ed51a5ea2.jpg');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic2.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic4.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic5.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('https://i.pinimg.com/736x/71/86/d9/7186d942ab5235e6a7583f25f71dc549.jpg');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic7.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic8.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic9.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic10.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic11.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic12.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic15.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic16.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic17.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic18.jpeg' %}');"></div>
+    <div class="slide" style="background-image: url('{% static 'pic19.jpeg' %}');"></div>
+</div>
+
+
+<!-- Bubbles -->
+<div class="bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+</div>
+
+
+<div class="hero">
+    <h1>Welcome to WanderLense</h1>
+    <p>Explore India</p>
+</div>
+
+<!-- About Section with Large Horizontal Slideshow -->
+<section class="section" id="about">
+    <h2>About India</h2>
+    <p>India, a land of diverse cultures, languages, and traditions, is a beautiful mosaic of vibrant colors and rich heritage, with each state offering its unique flavor.</p>
+        
+        <!-- Horizontal Slider Track -->
+        <div class="horizontal-slider-track" id="about-slider">
+            <img src="https://www.shutterstock.com/image-vector/illustration-man-playing-tutari-sit-260nw-1780726544.jpg" alt="Image 1">
+            <!-- Add more images as needed -->
+        </div>
+        
+</section>
+
+
+<!-- Culture Section with Horizontal Slideshow -->
+<section class="section" id="culture">
+    <h2>Culture</h2>
+    <p>India's cultural diversity is reflected in its variety of clothing styles, with each region embracing a unique traditional attire that speaks to its history and way of life.</p>
+    <div class="horizontal-slider" id="culture-slider">
+        <div class="image-container">
+        <img src="https://www.distinctdestinations.in/DistinctDestinationsBackEndImg/BlogImage/5-top-culture-hubs-in-india-L-distinctdestinations.jpg" alt="Culture Image 1">
+        <div class="image-text">Culture Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://d1whtlypfis84e.cloudfront.net/guides/wp-content/uploads/2019/08/08085938/INDIAN-CULTURE-1024x667.jpg" alt="Culture Image 2">
+        <div class="image-text">Culture Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://media.assettype.com/outlooktraveller%2F2023-10%2F95ed08bd-3a22-4619-8d32-ab1bfcc8810a%2Fcostume_1_20231001.jpg" alt="Culture Image 3">
+        <div class="image-text">Culture Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://www.distinctdestinations.in/DistinctDestinationsBackEndImg/BlogImage/5-top-culture-hubs-in-india-L-distinctdestinations.jpg" alt="Culture Image 1">
+        <div class="image-text">Culture Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://d1whtlypfis84e.cloudfront.net/guides/wp-content/uploads/2019/08/08085938/INDIAN-CULTURE-1024x667.jpg" alt="Culture Image 2">
+        <div class="image-text">Culture Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://media.assettype.com/outlooktraveller%2F2023-10%2F95ed08bd-3a22-4619-8d32-ab1bfcc8810a%2Fcostume_1_20231001.jpg" alt="Culture Image 3">
+        <div class="image-text">Culture Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://www.distinctdestinations.in/DistinctDestinationsBackEndImg/BlogImage/5-top-culture-hubs-in-india-L-distinctdestinations.jpg" alt="Culture Image 1">
+        <div class="image-text">Culture Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://d1whtlypfis84e.cloudfront.net/guides/wp-content/uploads/2019/08/08085938/INDIAN-CULTURE-1024x667.jpg" alt="Culture Image 2">
+        <div class="image-text">Culture Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://media.assettype.com/outlooktraveller%2F2023-10%2F95ed08bd-3a22-4619-8d32-ab1bfcc8810a%2Fcostume_1_20231001.jpg" alt="Culture Image 3">
+        <div class="image-text">Culture Image</div>
+    </div>
+    </div>
+</section>
+
+<!-- Cuisine Section with Horizontal Slideshow -->
+<section class="section" id="cuisine">
+    <h2>Cuisine</h2>
+    <p>Indian cuisine is famous for its use of spices, flavors, and textures, with dishes varying from state to state and representing the country's culinary diversity.</p>
+    <div class="horizontal-slider" id="cuisine-slider">
+        <div class="image-container">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTinCKGPNr2g5zx4Qet43b2n3rGXhO-_ppJww&s" alt="Cuisine Image 1">
+        <div class="image-text">Cuisine Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://www.blueosa.com/wp-content/uploads/2020/01/the-best-top-10-indian-dishes.jpg" alt="Cuisine Image 2">
+        <div class="image-text">Cuisine Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://amritsr.com/wp-content/uploads/2020/08/Specialty-of-Indian-Cuisine.jpg" alt="Cuisine Image 3">
+        <div class="image-text">Cuisine Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTinCKGPNr2g5zx4Qet43b2n3rGXhO-_ppJww&s" alt="Cuisine Image 1">
+        <div class="image-text">Cuisine Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://www.blueosa.com/wp-content/uploads/2020/01/the-best-top-10-indian-dishes.jpg" alt="Cuisine Image 2">
+        <div class="image-text">Cuisine Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://amritsr.com/wp-content/uploads/2020/08/Specialty-of-Indian-Cuisine.jpg" alt="Cuisine Image 3">
+        <div class="image-text">Cuisine Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTinCKGPNr2g5zx4Qet43b2n3rGXhO-_ppJww&s" alt="Cuisine Image 1">
+        <div class="image-text">Cuisine Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://www.blueosa.com/wp-content/uploads/2020/01/the-best-top-10-indian-dishes.jpg" alt="Cuisine Image 2">
+        <div class="image-text">Cuisine Image</div>
+    </div>
+        <div class="image-container">
+        <img src="https://amritsr.com/wp-content/uploads/2020/08/Specialty-of-Indian-Cuisine.jpg" alt="Cuisine Image 3">
+        <div class="image-text">Cuisine Image</div>
+    </div>
+    </div>
+</section>
+
+<!-- Fabrics Section with Horizontal Slideshow -->
+<section class="section" id="fabrics">
+    <h2>Fabrics</h2>
+    <p>India is renowned for its textiles, from handwoven silk to intricate embroidery, reflecting the country's rich tradition in fabric arts.</p>
+    <div class="horizontal-slider" id="fabrics-slider">
+        <div class="image-container">
+        <img src="https://5.imimg.com/data5/US/IX/MY-27908493/traditional-screen-printed-cotton-kalamkari-fabric-500x500.jpg" alt="Kalamkari">
+        <div class="image-text">Kalamkari</div>
+    </div>
+        <div class="image-container">
+        <img src="https://d218kegnl5or7l.cloudfront.net/wp-content/uploads/2013/06/kosa-silk3.jpg" alt="Kosa silk">
+        <div class="image-text">Kosa silk</div>
+    </div>
+        <div class="image-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c6/Bandhani_print_open.JPG" alt="Bandhani">
+        <div class="image-text">Bandhani</div>
+    </div>
+        <div class="image-container">
+        <img src="https://www.parisera.com/cdn/shop/files/DSC_0217-1_Copy_91b8771a-49df-4f29-a3d4-ba8c0c415fa2.jpg?v=1703511760&width=1500" alt="Ikat">
+        <div class="image-text">Ikat</div>
+    </div>
+        <div class="image-container">
+        <img src="https://miro.medium.com/v2/resize:fit:1300/1*DaONkjEN55xRRrNlgB9XlQ.jpeg" alt="Banarasi">
+        <div class="image-text">Banarasi</div>
+    </div>
+        <div class="image-container">
+        <img src="https://www.parisera.com/cdn/shop/files/DSC_0237-1_Copy_f2e6637a-dec6-4940-8537-c542ee639afd.jpg?v=1703500436&width=1500" alt="Chanderi">
+        <div class="image-text">Chanderi</div>
+    </div>
+        <div class="image-container">
+        <img src="https://cdn.shopify.com/s/files/1/0285/2667/4059/files/cotton_8a7e827d-11ad-42aa-b89e-1682011b8ea5_480x480.jpg?v=1662200186" alt="Cotton">
+        <div class="image-text">Cotton</div>
+    </div>
+        <div class="image-container">
+        <img src="https://anuprerna-bloomscorp.s3.ap-south-1.amazonaws.com/7QVRIS0W1DSXGHL1KHWYF5BELN4J08598.jpeg" alt="Linen">
+        <div class="image-text">Linen</div>
+    </div>
+        <div class="image-container">
+        <img src="https://anuprerna-bloomscorp.s3.ap-south-1.amazonaws.com/3QYOWA2CFS3IXK7HX6EWF1G3QNVN04650.jpeg" alt="Silk">
+        <div class="image-text">Silk</div>
+    </div>
+        <div class="image-container">
+        <img src="https://t4.ftcdn.net/jpg/05/18/07/93/360_F_518079391_gaimMOIBztSg1JmbO2Q9tMobRZmOkVMY.jpg" alt="Brocades">
+        <div class="image-text">Brocades</div>
+    </div>
+        <div class="image-container">
+        <img src="https://www.parisera.com/cdn/shop/files/DSC_0165-1_Copy_d9ffc5a7-128d-4286-9c60-1c4c674f7d73.jpg?v=1703503234&width=1500" alt="Kanjivaram">
+        <div class="image-text">Kanjivaram</div>
+    </div>
+        <div class="image-container">
+        <img src="https://i.pinimg.com/originals/cb/33/3c/cb333c7c1784da9aa73b444cc12a3d3a.jpg" alt="Leheriya">
+        <div class="image-text">Leheriya</div>
+    </div>
+        <div class="image-container">
+        <img src="https://media.licdn.com/dms/image/D4D12AQGQJcE2PBCJfQ/article-cover_image-shrink_600_2000/0/1693375089630?e=2147483647&v=beta&t=c76KjyYwljGEtx8usKCRcF-lBbRYw1CtzX6hdxko04o" alt="Ajrakh">
+        <div class="image-text">Ajrakh</div>
+    </div>
+        <div class="image-container">
+        <img src="https://i.pinimg.com/originals/a2/5c/6a/a25c6ae6006b68721b43fe665486b234.jpg" alt="Patola Silk">
+        <div class="image-text">Patola Silk</div>
+    </div>
+        <div class="image-container">
+        <img src="https://textilevaluechain.in/wp-content/uploads/2020/03/d35f7c5a1e97f53ecfeb44891ff43935-300x200.jpg" alt="Apatani">
+        <div class="image-text">Apatani</div>
+    </div>
+        <div class="image-container">
+        <img src="http://4.bp.blogspot.com/-sO9jdNiS5EY/Usyk_DUdcnI/AAAAAAAAADA/JJdhm9rxYUs/s1600/kain+batik.jpg" alt="Batik">
+        <div class="image-text">Batik</div>
+    </div>
+    </div>
+</section>
+
+<!-- Rivers Section with Horizontal Slideshow -->
+<section class="section" id="rivers">
+    <h2>Rivers</h2>
+    <p>The rivers of India are not only essential for sustenance but hold significant cultural and spiritual importance in Indian life.</p>
+    <div class="horizontal-slider" id="rivers-slider">
+        <div class="image-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Varanasiganga.jpg" alt="Ganges">
+        <div class="image-text">Ganges</div>
+    </div>
+        <div class="image-container">
+        <img src="https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSYnWnXVbxYtkEqOO573uvTiZQXJvugRO2KnqoNFR_pccastj1OIndaOVbcsnnsKqyR" alt="Indus River">
+        <div class="image-text">Indus River</div>
+    </div>
+        <div class="image-container">
+        <img src="https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSRfwRX-pl0xnSCZjXntcHUFezlLFkgZav8e-gKLgJcCq2fRlRiuQxX8cb1B8smSJAy" alt="Brahmaputra">
+        <div class="image-text">Brahmaputra</div>
+    </div>
+        <div class="image-container">
+        <img src="https://s3.india.com/travel/wp-content/uploads/2015/06/goda.jpg" alt="Godavari River">
+        <div class="image-text">Godavari</div>
+    </div>
+        <div class="image-container">
+        <img src="https://t3.gstatic.com/licensed-image?q=tbn:ANd9GcQPncTI9cG0MYgCYpSlnw1nES9brQa_IwMmeIqKuTzIwIubcvEmm72N7l98rx9HTDhY" alt="Bhagirathi River">
+        <div class="image-text">Bhagirathi River</div>
+    </div>
+        <div class="image-container">
+        <img src="https://t3.gstatic.com/licensed-image?q=tbn:ANd9GcQ-NiZD8yFDLDIxlK49k5la785fZUH1zui2-GuzHFKyg2f9eub8DC_ctQPtHvdB5tWK" alt="Alakananda River">
+        <div class="image-text">Alakananda River</div>
+    </div>
+        <div class="image-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c4/Cloudy%2Cvariety_colors%2Csky394.jpg" alt="Dhansiri">
+        <div class="image-text">Dhansiri</div>
+    </div>
+        <div class="image-container">
+        <img src="https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcTJPU5kjFqY_vC59WAfSxKu2KAL5K9Z7i5Zyl7TDt5lAyUpYUA9D1fi_UpkiX6oUMmC" alt="Sabarmati River">
+        <div class="image-text">Sabarmati River</div>
+    </div>
+        <div class="image-container">
+        <img src="https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcR4AJi3gLKTLee8Qt7ybrHuHJaCNKzwh9NStMqEuB1DhN-Bkz_BkdIbSJV67svEciJc" alt="Narmada River">
+        <div class="image-text">Narmada River</div>
+    </div>
+    </div>
+</section>
+
+<script>
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function showNextSlide() {
+        slides[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % totalSlides; // Loop back to the first slide
+        slides[currentIndex].classList.add('active');
+    }
+
+    setInterval(showNextSlide, 3000); // Change slide every 3 seconds
+</script>
+
+<script>
+    // Continuous scrolling function
+    function startAutoScroll(slider) {
+        let scrollAmount = 0;
+        const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
+        function scrollContent() {
+            slider.scrollLeft += 1; // Adjust the number for speed
+
+            if (slider.scrollLeft >= maxScrollLeft) {
+                slider.scrollLeft = 0; // Reset to start if reached the end
+            }
+            scrollAmount = requestAnimationFrame(scrollContent);
+        }
+
+        scrollAmount = requestAnimationFrame(scrollContent);
+
+        // Optional: pause on hover
+        slider.addEventListener("mouseenter", () => cancelAnimationFrame(scrollAmount));
+        slider.addEventListener("mouseleave", () => (scrollAmount = requestAnimationFrame(scrollContent)));
+    }
+
+    // Apply auto-scrolling to each slider section
+    document.querySelectorAll(".horizontal-slider").forEach(slider => startAutoScroll(slider));
+</script>
+
+<script>
+    function openPopup(category, src) {
+        // Implement your popup functionality here
+        alert(`Image from ${category}: ${src}`);
+    }
+</script>
+
+<footer>
+    <p>&copy; 2024 WanderLense. All rights reserved.</p>
+</footer>
 </body>
 </html>

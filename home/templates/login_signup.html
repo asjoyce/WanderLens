@@ -1,0 +1,150 @@
+<!-- login_signup.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up</title>
+    <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+</head>
+<style>
+    /* style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px;
+    background-color: #333;
+}
+
+.brand {
+    color: #fff;
+    font-size: 24px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-links li {
+    margin-left: 20px;
+}
+
+.nav-links li a {
+    color: #dba5a5;
+    text-decoration: none;
+}
+
+.content {
+    display: flex;
+    margin-top: 20px;
+    max-width: 800px;
+    width: 100%;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+.form-section {
+    width: 60%;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.form-section h3 {
+    margin-bottom: 20px;
+}
+
+.form-section input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+}
+
+.form-section button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.sidebar {
+    width: 40%;
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+</style>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <h1 class="brand">WanderLens</h1>
+            <ul class="nav-links">
+                <li><a href="{% url 'home:destinations' %}">Destinations</a></li>
+                <li><a href="{% url 'home:things_to_do' %}">Things To Do</a></li>
+                <li><a href="{% url 'home:indian_calendar' %}">Indian Calendar</a></li>
+                <li><a href="{% url 'home:login_signup' %}">Login/Sign Up</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>Hello!</h2>
+            <a href="#">View Details</a>
+
+            <div class="form-section">
+                <h3>Sign Up</h3>
+                <form method="post" action="{% url 'home:signup' %}">
+                    {% csrf_token %}
+                    <label for="mobile-number">Mobile Number</label>
+                    <input type="text" id="mobile-number" name="mobile_number" placeholder="Enter Mobile Number">
+                    <button type="submit">Send OTP</button>
+                </form>
+            </div>
+
+            <div class="sidebar">
+                <ul>
+                    <li><a href="{% url 'home:login_signup' %}">Log In / Sign Up</a></li>
+                    <li><a href="#">WestStyleClub</a></li>
+                    <li><a href="#">Store Locator</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+
+
+{% block content %}
+<style>
+/* Styling for the Sign Up Container */
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('https://www.shutterstock.com/image-vector/map-world-on-blur-backgroundclean-260nw-205374328.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+}
+
+.signup-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1.5s ease-in-out;
+}
+
+/* Heading Styling */
+h2 {
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    font-size: 2em;
+    margin-bottom: 20px;
+    animation: slideInFromLeft 1s ease-out;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+button[type="submit"] {
+    background-color: #FF8C00; /* Indian saffron-inspired color */
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #FF6F00;
+}
+
+p {
+    color: #555;
+    font-family: 'Arial', sans-serif;
+    margin-top: 20px;
+}
+
+p a {
+    color: #FF8C00;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+p a:hover {
+    color: #FF6F00;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInFromLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+</style>
+
+<div class="signup-container">
+    <div class="signup-box">
+        <h2>Sign Up</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
+</div>
+{% endblock %}

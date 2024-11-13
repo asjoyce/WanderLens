@@ -1,0 +1,655 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian States and Union Territories</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+        /* Navbar Styling */
+        .navbar {
+            background-color: #333; /* Navbar background color */
+            padding: 14px 16px; /* Padding for navbar */
+            overflow: hidden;
+            width: 100%; /* Full width */
+            position: fixed; /* Sticks to the top */
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Ensures it stays on top */
+        }
+
+        .navbar .logo a {
+            float: left;
+            color: rgb(184, 102, 102);
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        .nav-links {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            float: right;
+        }
+
+        .nav-links li {
+            float: left;
+        }
+
+        .nav-links li a {
+            display: block;
+            color: rgb(177, 121, 121);
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .nav-links li a:hover {
+            background-color: #fefefe;
+            color: black;
+        }
+
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f8f8;
+            color: #333;
+            padding-top: 60px; /* Space for the fixed navbar */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1em;
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px; /* Optional padding */
+            overflow-y: auto; /* Allow scrolling if content overflows */
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .restaurant-menu__header {
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        .restaurant-menu__title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-bar input {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .restaurant-menu__items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Creates 3 equal columns */
+            gap: 20px; /* Space between grid items */
+        }
+
+        .restaurant-menu__item {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative; /* Needed for the button positioning */
+        }
+
+        .restaurant-menu__item:hover {
+            transform: scale(1.02);
+            box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .restaurant-menu__item-media {
+            flex-shrink: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            height: 200px;
+        }
+
+        .restaurant-menu__item-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        /* Animation for image pop-up effect */
+        .restaurant-menu__item-media img:hover {
+            transform: scale(1.1);
+        }
+
+        .restaurant-menu__item-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .restaurant-menu__item-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .restaurant-menu__item-name {
+            font-weight: bold;
+            color: #ff6347;
+        }
+
+        .restaurant-menu__item-price {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .restaurant-menu__description {
+            font-size: 14px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .next-page-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: transparent;
+            color: #fff;
+            padding: 3px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .next-page-button:hover {
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="{% url 'home' %}">WanderLens</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'destinations' %}">Destinations</a></li>
+            <li><a href="{% url 'things_to_do' %}">Things To Do</a></li>
+            <li><a href="{% url 'indian_calendar' %}">Indian Calendar</a></li>
+            <li><a href="{% url 'login' %}">Login/Sign Up</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <div class="restaurant-menu">
+            <div class="restaurant-menu__header">
+                <h3 class="restaurant-menu__title">Indian States and Union Territories</h3>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search for states or union territories...">
+                </div>
+            </div>
+            <div class="restaurant-menu__items" id="menuItems">
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://res.cloudinary.com/simplotel/image/upload/x_0,y_73,w_1280,h_796,r_0,c_crop,q_80,fl_progressive/w_500,f_auto,c_fit/hotel-daspalla-visakhapatnam/1280px-Rushikonda_beach_view_Hotel_Daspalla_Hotel_in_Visakhapatnam" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">ANDHRA PRADESH</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://img.staticmb.com/mbcontent/images/crop/uploads/2023/5/CST-railway-station_0_1200.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">MAHARASHTRA</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.tourmyindia.com/blog//wp-content/uploads/2020/11/Feature-Akshardham-Temple.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">GUJARAT</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.ekeralatourism.net/wp-content/uploads/2018/03/Alleppey.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">KERALA</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.tourism.rajasthan.gov.in/content/dam/rajasthan-tourism/english/city/menu/KR_CityPalace01.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">RAJASTHAN</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.tourmyindia.com/socialimg/tripura-touris.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">TRIPURA</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.fabhotels.com/blog/wp-content/uploads/2019/04/Amritsar1.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">PUNJAB</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.tourmyindia.com/blog//wp-content/uploads/2015/08/sher-shah-suri-tomb-sasaram.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">BIHAR</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.indiatravel.app/wp-content/uploads/2024/04/kangla-fort.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">MANIPUR</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.holidify.com/images/cmsuploads/compressed/2999_20190305160539.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">LADAKH</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://ihplb.b-cdn.net/wp-content/uploads/2021/10/Rang-Ghar.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">ASSAM</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.holidify.com/images/cmsuploads/compressed/1_20190314162204.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">CHHATTISGARH</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://media2.thrillophilia.com/images/photos/000/115/737/original/1516998283_0_139c88_4f6e83d3_orig.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">GOA</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://haryana.pscnotes.com/wp-content/uploads/2017/10/3754-3-Tourist-places-in-gurgaon.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">HARYANA</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.holytreetravel.com/blog/IMAGE/gulmarg.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">JAMMU AND KASHMIR</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.asparkholidays.com/uploads/45331_palaces-heaven-on-earth-1.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">KARNATAKA</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://media2.thrillophilia.com/images/photos/000/131/575/original/1535796752_shutterstock_295945166.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">MADHYA PRADESH</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://images.herzindagi.info/image/2023/Jan/odisha1.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">ODISHA</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.holidify.com/images/cmsuploads/compressed/1520578061_Places_to_visit_in_Pondicherry.jpg_20180829165118.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">PUDUCHERRY</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.india.com/wp-content/uploads/2024/06/Gangtok-2.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">SIKKIM</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://albatrosses.in/wp-content/uploads/2024/07/Charminar-Tourist-Places-A-Complete-Guide.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">TELANGANA</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvaLoMBGPVFXPU-uYNZvNlqa-m2_zhL20jIg&s" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">UTTARAKHAND</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://hblimg.mmtcdn.com/content/hubble/img/destimg/mmt/activities/m_Agra_destjulimg_1_l_830_1277.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">UTTAR PRADESH</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuGMJJdomFdFEcqfsPkrbD4VGIFnkixUByTg&s" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">WEST BENGAL</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://static.wixstatic.com/media/d3a565_a0433264f7f341d6afbb8ac968965c3b~mv2.jpg/v1/fill/w_568,h_320,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/d3a565_a0433264f7f341d6afbb8ac968965c3b~mv2.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">ANDAMAN AND NICOBAR ISLANDS</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/4c/43/64/the-rock-garden-of-chandigarh.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">CHANDIGARH</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://indiatouristspots.weebly.com/uploads/7/9/4/2/79421790/swaminarayan-temple-dadra-and-nagar-haveli-1_orig.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">DADRA AND NAGAR HAVELI AND DAMAN AND DIU</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.fabhotels.com/blog/wp-content/uploads/2024/01/bbec4647-lakshadweep-1.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">LAKSHADWEEP</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.india.com/wp-content/uploads/2024/06/Chennai-3.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">TAMIL NADU</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://static.toiimg.com/photo/91692789.cms" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">ARUNACHAL PRADESH</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://assets-news.housing.com/news/wp-content/uploads/2022/07/28105924/Top-10-tourist-places-to-visit-in-Himachal-Pradesh-10.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">HIMACHAL PRADESH</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/06/c3/cc/4c/dassam-falls.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">JHARKHAND</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://www.fabhotels.com/blog/wp-content/uploads/2020/04/Meghalaya1.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">MEGHALAYA</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src ="https://www.purvidiscovery.com/blog-img/best-places-to-visit-in-mizoram.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">MIZORAM</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/62/13/76/pillars-at-kachari-ruins.jpg" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">NAGALAND</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+                <div class="restaurant-menu__item">
+                    <div class="restaurant-menu__item-media">
+                        <img src="https://himalayanrider.com/wp-content/uploads/2022/02/Humayus-tomb.jpeg-.webp" alt="Andhra Pradesh">
+                    </div>
+                    <div class="restaurant-menu__item-info">
+                        <h4 class="restaurant-menu__item-title">
+                            <span class="restaurant-menu__item-name">THE GOVERNMENT OF NCT OF DELHI</span>
+                        </h4>
+                    </div>
+                    <button class="next-page-button"><a href="{% url 'andhra_pradesh' %}" style="font-weight: bold; color: #ff6347; padding: 5px 10px; font-size: 18px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;"></a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function filterItems() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toUpperCase();
+            const items = document.getElementById('menuItems').getElementsByClassName('restaurant-menu__item');
+            
+            for (let i = 0; i < items.length; i++) {
+                const itemName = items[i].getElementsByClassName('restaurant-menu__item-name')[0];
+                if (itemName) {
+                    const textValue = itemName.textContent || itemName.innerText;
+                    if (textValue.toUpperCase().indexOf(filter) > -1) {
+                        items[i].style.display = "";
+                    } else {
+                        items[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        
+        // Add event listener to the search input
+        document.getElementById('searchInput').addEventListener('input', filterItems);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Places in Lakshadweep</title>
+    <style>
+        /* Navbar Styling */
+        .navbar {
+            background-color: #333;
+            padding: 8px 12px;
+            overflow: hidden;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo a {
+            float: left;
+            color: rgb(184, 102, 102);
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        .nav-links {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            float: right;
+        }
+
+        .nav-links li {
+            float: left;
+        }
+
+        .nav-links li a {
+            display: block;
+            color: rgb(177, 121, 121);
+            text-align: center;
+            padding: 8px 12px;
+            text-decoration: none;
+        }
+
+        .nav-links li a:hover {
+            background-color: #fefefe;
+            color: black;
+        }
+
+        /* Slideshow container styling */
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            overflow: hidden;
+            margin-top: 60px;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.5s ease;
+        }
+
+        .slide img:hover {
+            transform: scale(1.05);
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .slide-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Content Section Styling */
+        .content-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .about {
+            flex: 1;
+            padding: 20px;
+            color: #333;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .plan-your-trip {
+            flex: 1;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .plan-your-trip h3 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .plan-your-trip label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .plan-your-trip select, .plan-your-trip input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .plan-your-trip button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #ff6347;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .plan-your-trip button:hover {
+            background-color: #e5533d;
+        }
+
+        /* Horizontal Slideshow Styling */
+        .horizontal-slideshow {
+            display: flex;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            scroll-behavior: smooth; /* Smooth scrolling */
+            margin-top: 20px;
+            padding: 10px 0;
+            position: relative;
+        }
+
+        .horizontal-slides {
+            display: flex;
+            /* Removed the transition here for a smoother scroll experience */
+        }
+
+        .horizontal-slide {
+            min-width: 300px; /* Width of each slide */
+            margin-right: 20px; /* Space between slides */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .horizontal-slide:hover {
+            transform: scale(1);
+        }
+
+        .horizontal-slide img {
+            width: 100%;
+            height: 70%;
+            transition: transform 0.3s ease;
+        }
+
+        .horizontal-slide:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Slide info for horizontal slideshow */
+        .horizontal-slide-info {
+            padding: 10px;
+            text-align: center;
+            background-color: #fff;
+            font-size: 14px;
+        }
+
+        .horizontal-slide-info h3 {
+            margin: 10px 0 5px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .horizontal-slide-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        /* Optionally add scrollbar styling for better visibility */
+        .horizontal-slideshow::-webkit-scrollbar {
+            height: 8px; /* Height of the scrollbar */
+        }
+
+        .horizontal-slideshow::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.5); /* Color of the scrollbar thumb */
+            border-radius: 10px; /* Rounded edges for the scrollbar thumb */
+        }
+
+        .horizontal-slideshow::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1); /* Background of the scrollbar track */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="#">WanderLens</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'destinations' %}">Destinations</a></li>
+            <li><a href="{% url 'things_to_do' %}">Things To Do</a></li>
+            <li><a href="{% url 'indian_calendar' %}">Indian Calendar</a></li>
+            <li><a href="{% url 'login' %}">Login/Sign Up</a></li>
+        </ul>
+    </div>
+
+    <div class="slideshow-container">
+        <div class="slides">
+            <div class="slide">
+                <img src="https://lakshadweeptourism.weebly.com/uploads/5/1/6/2/5162611/header_images/1510829468.jpeg" alt="Place 1">
+                <div class="slide-info">Place 1: Beautiful Beach</div>
+            </div>
+            <div class="slide">
+                <img src="https://cdn.bookmetickets.com/static/falcon/img/stock/page/5bb2d94d04a28675b2b99da3/659c3b8d2de40a5b2984f59f/compressed/Bangaram_Island.jpg" alt="Place 2">
+                <div class="slide-info">Place 2: Stunning Sunset</div>
+            </div>
+        </div>
+
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+
+    <div class="content-section">
+        <div class="about">
+            <h2>About Lakshadweep</h2>
+            <p>Lakshadweep, a tropical paradise in the Arabian Sea, is known for its pristine beaches, coral reefs, and clear blue waters. It is an ideal destination for beach lovers, nature enthusiasts, and those seeking tranquility and beauty away from the bustling mainland. Each island offers unique experiences, from water sports to peaceful resorts, making it a perfect getaway.</p>
+        </div>
+        
+        <div class="plan-your-trip">
+            <h3>Let Us Make Your Plan</h3>
+            <label for="days">Number of Days</label>
+            <select id="days" onchange="updateBudgetOptions()">
+                <option value="">Select days</option>
+                <option value="2">2 Days</option>
+                <option value="3">3 Days</option>
+                <option value="4">4 Days</option>
+                <option value="5">5 Days</option>
+            </select>
+            
+            <label for="budget">Budget(excludes flight expenses)</label>
+            <select id="budget">
+                <option value="">Select budget</option>
+            </select>
+            
+            <label for="people">Number of People</label>
+            <input type="number" id="people" placeholder="Enter number of people">
+        
+                <!-- Redirect to Itinerary page on Submit -->
+                <button onclick="window.location.href='{% url 'itinerary' %}'">Submit</button>
+        </div>
+    </div>
+
+    <!-- Places to Visit Heading -->
+    <h2 style="text-align: left; margin-top: 20px;">Places to Visit</h2>
+
+    <!-- Horizontal Slideshow Section -->
+    <div class="horizontal-slideshow">
+        <div class="horizontal-slides">
+            <div class="horizontal-slide">
+                <img src="https://visitlakshadweep.in/wp-content/uploads/2023/08/agatti-island.jpg?v=1693634876" alt="Agatti Island">
+                <div class="horizontal-slide-info">
+                    <h3>Agatti Island</h3>
+                    <p>Known for its beautiful coral reefs and clear blue waters, perfect for snorkeling and scuba diving.</p>
+                </div>
+            </div>
+            <div class="horizontal-slide">
+                <img src="https://bangaramislandresort.in/assets/image/pic8.jpg" alt="Bangaram Island">
+                <div class="horizontal-slide-info">
+                    <h3>Bangaram Island</h3>
+                    <p>A secluded paradise ideal for water sports, featuring white sandy beaches and crystal-clear lagoons.</p>
+                </div>
+            </div>
+            <div class="horizontal-slide">
+                <img src="https://media.holidify.com/images/cmsuploads/compressed/hd-wallpaper-3021072-19203-1666966978_20240501170430.jpg" alt="Minicoy Island">
+                <div class="horizontal-slide-info">
+                    <h3>Minicoy Island</h3>
+                    <p>Famous for its distinct culture, lighthouse, and rich marine life, making it a unique destination.</p>
+                </div>
+            </div>
+            <!-- Add more slides as needed -->
+            <div class="horizontal-slide">
+                <img src="https://www.trodly.com/pictures/attraction/x5757.jpg.pagespeed.ic.tFnfyFCch6.jpg" alt="Amindivi Island">
+                <div class="horizontal-slide-info">
+                    <h3>Amindivi Island</h3>
+                    <p>Amindivi Island is known for its pristine beaches, rich biodiversity, and vibrant local culture, making it a serene getaway.</p>
+                </div>
+            </div>
+            <div class="horizontal-slide">
+                <img src="https://i0.wp.com/azureskyfollows.com/wp-content/uploads/2024/01/snorkel-point-in-kalpeni-lakshadweep.jpeg?resize=960%2C640&ssl=1" alt="Tinker Island">
+                <div class="horizontal-slide-info">
+                    <h3>Tinker Island</h3>
+                    <p>Tinker Island is a small, picturesque island known for its natural beauty and tranquility, ideal for relaxation and exploration.</p>
+                </div>
+            </div>
+            <div class="horizontal-slide">
+                <img src="https://media-cdn.tripadvisor.com/media/photo-s/05/04/04/3e/kadmat-islands.jpg" alt="Kadamat Island">
+                <div class="horizontal-slide-info">
+                    <h3>Kadamat Island</h3>
+                    <p>Kodmat Island is a serene paradise known for stunning beaches.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const budgetRanges = {
+            2: [
+                { type: "Basic", range: "₹6,000 - ₹7,000 (per/p)" },
+                { type: "Standard", range: "₹7,000 - ₹8,000 (per/p)" },
+                { type: "Comfort", range: "₹8,000 - ₹8,500 (per/p)" },
+                { type: "Premium", range: "₹8,500 - ₹9,000 (per/p)" }
+            ],
+            3: [
+                { type: "Basic", range: "₹9,000 - ₹10,500 (per/p)" },
+                { type: "Standard", range: "₹10,500 - ₹12,000 (per/p)" },
+                { type: "Comfort", range: "₹12,000 - ₹12,500 (per/p)" },
+                { type: "Premium", range: "₹12,500 - ₹13,000 (per/p)" }
+            ]
+            // Add further options here for 4, 5, etc.
+        };
+
+        function updateBudgetOptions() {
+            const days = document.getElementById("days").value;
+            const budgetSelect = document.getElementById("budget");
+            budgetSelect.innerHTML = "<option value=''>Select budget-excluding flight</option>";
+            if (budgetRanges[days]) {
+                budgetRanges[days].forEach(budget => {
+                    const option = document.createElement("option");
+                    option.text = `${budget.type} (${budget.range})`;
+                    budgetSelect.add(option);
+                });
+            }
+        }
+
+        function submitForm() {
+            const days = document.getElementById("days").value;
+            const budget = document.getElementById("budget").value;
+            const people = document.getElementById("people").value;
+
+            if (days && budget && people) {
+                alert(`Trip planned for ${days} days with a budget of ${budget} for ${people} people!`);
+            } else {
+                alert("Please fill out all fields.");
+            }
+        }
+
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("slide");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slides[slideIndex - 1].style.display = "block";
+        }
+
+        setInterval(function() {
+            plusSlides(1);
+        }, 4000);
+    </script>
+
+</body>
+</html>

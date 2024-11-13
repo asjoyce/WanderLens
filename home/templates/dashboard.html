@@ -1,0 +1,73 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+<h1>Dashboard</h1>
+
+<!-- Destinations Section -->
+<h2>Destinations</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Popular</th>
+            <th>Categories</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for destination in destinations %}
+        <tr>
+            <td>{{ destination.name }}</td>
+            <td>{{ destination.description }}</td>
+            <td>{{ destination.location }}</td>
+            <td>{{ destination.popular|yesno:"Yes,No" }}</td>
+            <td>
+                {% for category in destination.categories.all %}
+                    {{ category.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Tour Packages Section -->
+<h2>Tour Packages</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Destination</th>
+            <th>Price</th>
+            <th>Duration (Days)</th>
+            <th>Max People</th>
+            <th>Available</th>
+            <th>Categories</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tour_package in tour_packages %}
+        <tr>
+            <td>{{ tour_package.name }}</td>
+            <td>{{ tour_package.destination.name }}</td>
+            <td>{{ tour_package.price }}</td>
+            <td>{{ tour_package.duration_days }}</td>
+            <td>{{ tour_package.max_people }}</td>
+            <td>{{ tour_package.available|yesno:"Yes,No" }}</td>
+            <td>
+                {% for category in tour_package.categories.all %}
+                    {{ category.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Add navigation button -->
+<a href="{% url 'home' %}">
+    <button type="button" class="btn btn-success">Home Window</button>
+</a>
+{% endblock %}

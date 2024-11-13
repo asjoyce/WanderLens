@@ -1,0 +1,256 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ state.name }} - Things to Do</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .slideshow-container {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+            padding: 20px;
+        }
+        .mySlides {
+            display: none;
+            animation: fade 1s ease-in-out;
+        }
+        @keyframes fade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .food-item {
+            cursor: pointer;
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .food-item:hover {
+            transform: scale(1.05);
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            animation: pop 0.5s;
+        }
+        @keyframes pop {
+            from { transform: translate(-50%, -50%) scale(0); }
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+        .popup .close {
+            cursor: pointer;
+            float: right;
+            font-size: 20px;
+        }
+        .section {
+            margin: 40px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ state.name }}</h1>
+
+    <!-- Section 1: Fun Places -->
+    <div class="slideshow-container">
+        <h2>Fun Places to Visit</h2>
+        {% for place in fun_places %}
+            <div class="mySlides">
+                <img src="{{ place.image.url }}" style="width:100%">
+                <div class="text">{{ place.description }}</div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <br>
+
+    <!-- Section 2: Street Shopping -->
+    <div class="slideshow-container">
+        <h2>Street Shopping</h2>
+        <div class="mySlides">
+            <img src="https://example.com/delhi.jpg" style="width:100%">
+            <div class="text">Delhi: Explore the bustling markets of Sarojini Nagar and Chandni Chowk.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/jaipur.jpg" style="width:100%">
+            <div class="text">Jaipur: Visit Johari Bazaar for jewelry and handicrafts.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/mumbai.jpg" style="width:100%">
+            <div class="text">Mumbai: Colaba Causeway is famous for street shopping.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/kolkata.jpg" style="width:100%">
+            <div class="text">Kolkata: New Market is known for a wide variety of goods.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/bangalore.jpg" style="width:100%">
+            <div class="text">Bangalore: Commercial Street has something for everyone.</div>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Section 3: Monuments and Historical Sites -->
+    <div class="slideshow-container">
+        <h2>Monuments and Historical Sites</h2>
+        <div class="mySlides">
+            <img src="https://example.com/taj_mahal.jpg" style="width:100%">
+            <div class="text">Agra: The Taj Mahal, a symbol of love and Mughal architecture.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/amer_fort.jpg" style="width:100%">
+            <div class="text">Jaipur: Amer Fort, a beautiful blend of Hindu and Mughal styles.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/red_fort.jpg" style="width:100%">
+            <div class="text">Delhi: Red Fort, a UNESCO World Heritage site.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/golconda_fort.jpg" style="width:100%">
+            <div class="text">Hyderabad: Golconda Fort, known for its acoustics and architecture.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/mysore_palace.jpg" style="width:100%">
+            <div class="text">Mysore: Mysore Palace, an architectural marvel with a royal legacy.</div>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Section 4: Religious Places -->
+    <div class="slideshow-container">
+        <h2>Religious Places</h2>
+        <div class="mySlides">
+            <img src="https://example.com/varanasi.jpg" style="width:100%">
+            <div class="text">Varanasi: The Ghats and Kashi Vishwanath Temple are sacred in Hinduism.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/golden_temple.jpg" style="width:100%">
+            <div class="text">Amritsar: The Golden Temple, a central Sikh pilgrimage site.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/jagannath_temple.jpg" style="width:100%">
+            <div class="text">Puri: Jagannath Temple, famous for its annual Rath Yatra.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/tirumala_temple.jpg" style="width:100%">
+            <div class="text">Tirupati: Tirumala Temple, one of the wealthiest temples in India.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/rishikesh.jpg" style="width:100%">
+            <div class="text">Rishikesh: Known for its ashrams and the Beatles' visit to Maharishi Mahesh Yogi’s ashram.</div>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Section 5: Nature and Wildlife -->
+    <div class="slideshow-container">
+        <h2>Nature and Wildlife</h2>
+        <div class="mySlides">
+            <img src="https://example.com/ranthambore.jpg" style="width:100%">
+            <div class="text">Ranthambore: Ranthambore National Park, popular for tiger sightings.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/kerala_backwaters.jpg" style="width:100%">
+            <div class="text">Kerala: Backwaters of Alleppey, known for houseboat cruises.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/jim_corbett.jpg" style="width:100%">
+            <div class="text">Jim Corbett: India's oldest national park, known for wildlife safaris.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/kaziranga.jpg" style="width:100%">
+            <div class="text">Kaziranga: Home to the one-horned rhinoceros.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/pangong_lake.jpg" style="width:100%">
+            <div class="text">Ladakh: Pangong Lake, known for its unique color-changing waters.</div>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Section 6: Cultural Experiences -->
+    <div class="slideshow-container">
+        <h2>Cultural Experiences</h2>
+        <div class="mySlides">
+            <img src="https://example.com/kathakali.jpg" style="width:100%">
+            <div class="text">Kerala: Attend Kathakali performances and explore local cuisine.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/camel_rides.jpg" style="width:100%">
+            <div class="text">Rajasthan: Experience camel rides and traditional dance in the Thar Desert.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/khajuraho.jpg" style="width:100%">
+            <div class="text">Madhya Pradesh: Visit Khajuraho for its exquisite temple sculptures.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/rann_utsav.jpg" style="width:100%">
+            <div class="text">Gujarat: Witness the Rann Utsav, a desert festival in the Rann of Kutch.</div>
+        </div>
+        <div class="mySlides">
+            <img src="https://example.com/classical_dance.jpg" style="width:100%">
+            <div class="text">Tamil Nadu: Explore classical dance performances in Chennai during the dance season.</div>
+        </div>
+    </div>
+
+    <div class="popup" id="popup">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <h2 id="popup-title"></h2>
+        <img id="popup-image" src="" alt="" style="width: 100%;">
+        <p id="popup-description"></p>
+    </div>
+
+    <script>
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let slides = document.getElementsByClassName("mySlides");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+            slides[slideIndex - 1].style.display = "block";  
+            setTimeout(showSlides, 3000); // Change image every 3 seconds
+        }
+
+        function showPopup(title, description, image) {
+            document.getElementById('popup-title').innerText = title;
+            document.getElementById('popup-description').innerText = description;
+            document.getElementById('popup-image').src = image;
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
